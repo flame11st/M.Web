@@ -1,68 +1,61 @@
 <template>
-    <div id="main">
-        <div id="top-menu-component">
-            <TopMenu/>
+    <v-app>
+        <div id="main">
+            <div id="top-panel-component">
+                <top-panel/>
+            </div>
+
+            <div id="component-placeholder">
+                <router-view />
+            </div>
         </div>
-        <div id="pages-component">
-            <pages/>
-        </div>
-        
-        <div id="component-placeholder">
-            <router-view></router-view>
-        </div>
-    </div>
+    </v-app>
 </template>
 
-<script>
-import Pages from './Pages/Pages.vue'
-import TopMenu from './TopMenu/TopMenu.vue'
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import TopPanel from './TopPanel.vue';
 
-export default {
+@Component({
     components: {
-        Pages,
-        TopMenu
+        TopPanel,
     },
-    data() {
-        return {
-        }
-    },
-    methods:{
-        
-    }
+})
+export default class Main extends Vue {
+
 }
 </script>
 
 <style>
     #main {
-        display: grid;
-        grid-template-areas:
-        "top-menu top-menu"
-        "pages-component component-placeholder";
-        grid-template-rows: 60px 1fr;
-        grid-template-columns: 1fr 6fr;
-        grid-gap: 1em;
-        height: 97vh;
+        background-color: #141414;
+        color: white;
+        height: 100%;
     }
 
-    #top-menu-component{
-        background-color: coral;
-        grid-area: top-menu;
-    }
-
-    #pages-component {
-        display: grid;
-        grid-area: pages-component;
-        background-color: blueviolet;
+    #sidebar-component {
+        grid-area: sidebar-component;
     }
 
     #component-placeholder {
         grid-area: component-placeholder;
-        background-color: aqua;
+        /* background-color: aqua; */
     }
 
-    .pages{
-        align-self: center;
-        background-color: chartreuse;
+    ::-webkit-scrollbar {
+        width: .2rem;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #747475;
+    }
+
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background-color: #747475
     }
 </style>
-
