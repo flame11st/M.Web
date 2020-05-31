@@ -1,4 +1,6 @@
 import Person from './person';
+import MovieRate from '@/enums/movieRate';
+import MovieType from '@/enums/movieType';
 
 class Movie {
     constructor(movieDTO: any) {
@@ -13,6 +15,14 @@ class Movie {
         this.ReleaseDate = movieDTO.releaseDate;
         this.Tagline = movieDTO.tagline;
         this.Title = movieDTO.title;
+        this.MovieRate = movieDTO.movieRate;
+        this.MovieType = movieDTO.movieType;
+        this.Year = movieDTO.year;
+        this.AverageTimeOfEpisode = movieDTO.averageTimeOfEpisode;
+        this.InProduction = movieDTO.inProduction;
+        this.SeasonsCount = movieDTO.seasonsCount;
+        this.Rating = movieDTO.rating;
+        this.Scores = movieDTO.scores;
     }
 
     Id!: string;
@@ -29,6 +39,10 @@ class Movie {
 
     Duration!: number;
 
+    Rating!: number;
+
+    Scores!: number;
+
     Countries!: string[];
 
     Actors!: Person[];
@@ -36,6 +50,18 @@ class Movie {
     Directors!: Person[];
 
     Genres!: string[];
+
+    MovieRate!: MovieRate;
+
+    MovieType!: MovieType;
+
+    Year!: number;
+
+    AverageTimeOfEpisode!: number;
+
+    InProduction!: boolean;
+
+    SeasonsCount!: number;
 }
 
 export default Movie;

@@ -1,5 +1,6 @@
 import api from '../helpers/Api';
 import UserDTO from '@/objects/userDTO';
+import MovieRate from '@/enums/movieRate';
 
 class ServiceAgent {
     Login(email: string, password: string) {
@@ -30,20 +31,24 @@ class ServiceAgent {
         return api.get(`movies/getmovie?id=${id}`);
     }
 
-    RateMovie(movieId: string, userId: string, isLiked: boolean) {
+    RateMovie(movieId: string, userId: string, movieRate: MovieRate) {
         return api.post('User/RateMovie', {
             MovieId: movieId,
             UserId: userId,
-            IsLiked: isLiked,
+            MovieRate: movieRate,
         });
-    }
-
-    AddToWatchlist(userId: string, movieId: string) {
-        return api.get(`User/AddToWatchlist?userId=${userId}&movieId=${movieId}`);
     }
 
     GetUserMovies(userId: string) {
         return api.get(`User/GetUserMovies?userId=${userId}`);
+    }
+
+    Search(query: string) {
+        return api.get(`movies/Search?query=${query}`);
+    }
+
+    GoogleLogin(idToken: string) {
+        return api.get(`Identity/GoogleLogin?idToken=${idToken}`);
     }
 }
 

@@ -15,6 +15,7 @@ module.exports = {
         'class-methods-use-this': 'off',
         indent: ['error', 4],
         quotes: ['error', 'single'],
+        'max-len': 0,
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',

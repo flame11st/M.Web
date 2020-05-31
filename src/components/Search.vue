@@ -1,58 +1,234 @@
 <template>
     <div class="search">
-        <v-autocomplete
-            class="search-input"
-            dark
-            v-model="searchText"
-            :items="items"
-            :loading="isLoading"
-            color="white"
-            hide-no-data
-            hide-selected
-            outlined
-            item-text="Description"
-            item-value="API"
-            placeholder="Start typing to Search"
-            append-icon="mdi-database-search"
-            return-object
-        ></v-autocomplete>
+        <v-card class="search-panel"
+            @mouseleave="setMouseLeaved(true)"
+            @mouseenter="setMouseLeaved(false)"
+        >
+            <v-text-field
+                prepend-inner-icon="mdi-movie-search"
+                class="search-input"
+                v-model="searchText"
+                solo
+                label="Start typing to Search"
+                clearable
+                ref="searchInput"
+            ></v-text-field>
+            <v-progress-linear
+                v-show="isLoading"
+                indeterminate
+            ></v-progress-linear>
+            <v-fab-transition>
+                <div v-show="items.length > 0">
+                    <v-card
+                        class="finded-item"
+                        v-for="(item, index) in items"
+                        :key="index"
+                    >
+                        <v-img class="finded-item-image" :src="imageUrl + item.PosterPath"/>
+
+                        <div>
+                            <h3>{{ item.Title }}</h3>
+                            <p>{{ item.Year }}</p>
+                            <p>{{ item.Genres.join(', ') }}</p>
+                        </div>
+                        <div class="buttons">
+                            <buttons
+                                :movieId="item.Id"
+                                :movieRate="item.MovieRate"
+                                :movieRateChangedCallback="rateMovie"
+                            ></buttons>
+                        </div>
+                    </v-card>
+                </div>
+            </v-fab-transition>
+        </v-card>
+        <v-snackbar
+            v-model="snackbarOpened"
+            :timeout="2000"
+            top
+            right
+        >
+            {{ snackbarText }}
+        </v-snackbar>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
+import _ from 'lodash';
+import ServiceAgent from '../services/serviceAgent';
+import Buttons from './shared/BottomButtons.vue';
+import MovieRate from '@/enums/movieRate';
+import Movie from '@/objects/movie';
 
-@Component
+const serviceAgent = new ServiceAgent();
+
+@Component({
+    components: {
+        Buttons,
+    },
+})
 export default class Search extends Vue {
     isLoading = false;
 
-    items: any[] = [];
+    isMouseLeaved = false;
+
+    items: any = [];
 
     searchText = '';
+
+    snackbarOpened = false;
+
+    snackbarText = '';
+
+    debouncedSearch: any;
+
+    searchFocused = false;
+
+    public imageUrl = 'https://image.tmdb.org/t/p/w500';
+
+    mounted() {
+        this.debouncedSearch = _.debounce(this.search, 500);
+
+        this.$watch(
+            () => (this.$refs.searchInput as any).isFocused,
+            (val) => {
+                this.searchFocused = val;
+            },
+        );
+
+        window.onclick = () => {
+            if (this.isMouseLeaved && !this.searchFocused) {
+                this.searchText = '';
+            }
+        };
+    }
+
+    @Watch('searchText')
+    onSearchTextChanged() {
+        if (this.searchText && this.searchText !== '') {
+            this.isLoading = true;
+            this.debouncedSearch();
+        } else {
+            this.items = [];
+        }
+    }
+
+    setMouseLeaved(isMouseLeaved: boolean) {
+        this.isMouseLeaved = isMouseLeaved;
+    }
+
+    get userId() {
+        const result = this.$store.getters.userId;
+
+        return result;
+    }
+
+    get userMovies(): Movie[] {
+        const result = this.$store.getters.userMovies;
+
+        return result;
+    }
+
+    getSnackbarText(movieRate: MovieRate) {
+        switch (movieRate) {
+        case MovieRate.notLiked:
+        case MovieRate.liked: {
+            return `Added to 'Viewed' with rate '${MovieRate[movieRate]}'`;
+        }
+        case MovieRate.addedToWatchlist: {
+            return 'Added to WatchList';
+        }
+        default: {
+            return '';
+        }
+        }
+    }
+
+    async rateMovie(movieId: string, movieRate: MovieRate) {
+        this.searchText = '';
+
+        await serviceAgent.RateMovie(movieId, this.userId, movieRate)
+            .then(() => {
+                this.$store.dispatch('setUserMovies');
+                this.snackbarText = this.getSnackbarText(movieRate);
+                this.snackbarOpened = true;
+            });
+    }
+
+    async search() {
+        const self = this;
+        const movies = await serviceAgent.Search(this.searchText);
+
+        this.items = movies.data.map((m: any):Movie => {
+            const result = new Movie(m);
+            const intersectedMovies = self.userMovies.filter((um: Movie) => result.Id === um.Id);
+
+            if (intersectedMovies.length > 0) result.MovieRate = intersectedMovies[0].MovieRate;
+
+            return result;
+        });
+
+        this.isLoading = false;
+    }
 }
 </script>
 
-<style>
+<style lang="scss">
+    @use '../style/variables';
+
     .search {
         display: grid;
         justify-items: center;
-        align-content: center;
-    }
+        padding-top: 15px;
+        height: fit-content;
 
-    .search-input {
-        width: 60%;
-    }
+        .v-snack__wrapper {
+            background-color: variables.$additional-color;
+            min-width: 250px;
+        }
 
-    .search-input .v-text-field__details {
-        display: none;
-    }
+        .search-panel {
+            width: 55%;
+            z-index: 10;
 
-    .search-input .v-input__slot {
-        margin: 0;
-    }
+            // .search-input {
+            //     margin-bottom: ;
+            // }
 
-    .search-input .v-icon {
-        transform: none !important;
+            .finded-item {
+                padding: 10px;
+                display: grid;
+                grid-template-columns: 1fr 5fr 200px;
+
+                .buttons {
+                    align-self: center;
+                }
+
+                p {
+                    padding-top: 8px;
+                    margin-bottom: 0;
+                }
+
+                .finded-item-image {
+                    width: 60px;
+                    height: 90px;
+                }
+            }
+
+            .v-text-field__details {
+                display: none;
+            }
+
+            .v-input__slot {
+                margin: 0;
+
+                .v-input__prepend-inner {
+                    padding-right: 10px;
+                }
+            }
+        }
     }
 </style>

@@ -5,7 +5,7 @@
             class="bottom-buttons"
             :movieId="movieId"
         >
-            <v-btn dark @click="getRecomendation">Next</v-btn>
+            <v-btn @click="getRecomendation">Next</v-btn>
         </BottomButtons>
 
         <v-overlay :value="pendingLoad">
@@ -38,7 +38,7 @@ export default class MovieRecommendations extends Vue {
     public MovieRate!: MovieRate;
 
     get userId() {
-        const result = this.$store.state.userId;
+        const result = this.$store.getters.userId;
 
         return result;
     }

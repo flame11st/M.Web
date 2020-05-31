@@ -1,7 +1,10 @@
 <template>
-    <div class="top-menu" dark>
-        <user-info />
-        <search />
+    <div class="top-menu">
+        <div class="left-block">
+            <img alt="logo" src="../assets/W-logo.png">
+        </div>
+        <search v-show="userId"/>
+        <user-info class="user-info-component"/>
     </div>
 </template>
 
@@ -18,17 +21,37 @@ import Search from './Search.vue';
     },
 })
 export default class TopMenu extends Vue {
+    get userId() {
+        const result = this.$store.getters.userId;
 
+        return result;
+    }
 }
 </script>
 
-<style>
+<style lang="scss">
     .top-menu {
         display: grid;
         grid-template-columns: 1fr 8fr;
-        grid-gap: 1em;
         height: 80px;
-        /* border-bottom: 1px solid white; */
-        box-shadow: 0px -5px 15px #a6a5a5;
+        box-shadow: 0px 0px 6px #a6a5a5;
+
+        .left-block {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            max-width: 100%;
+
+            > img {
+                margin-top: 5px;
+                margin-left: 10px;
+                height: 70px;
+            }
+        }
+
+        .user-info-component {
+            position: absolute;
+            left: 120px;
+            top: 16px;
+        }
     }
 </style>

@@ -5,9 +5,10 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             v-on="on"
-                            @click="rateMovie(true)"
-                            dark
-                        >mdi-thumb-up-outline</v-icon>
+                            @click="changeMovieRate(MovieRate.liked)"
+                        >
+                        {{`mdi-thumb-up${movieRate === MovieRate.liked ? '' : '-outline'}`}}
+                        </v-icon>
                     </template>
                 <span>Like</span>
             </v-tooltip>
@@ -16,9 +17,10 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             v-on="on"
-                            @click="rateMovie(false)"
-                            dark
-                        >mdi-thumb-down-outline</v-icon>
+                            @click="changeMovieRate(MovieRate.notLiked)"
+                        >
+                        {{`mdi-thumb-down${movieRate === MovieRate.notLiked ? '' : '-outline'}`}}
+                        </v-icon>
                     </template>
                 <span>Not like</span>
             </v-tooltip>
@@ -27,9 +29,10 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             v-on="on"
-                            @click="addToWatchlist()"
-                            dark
-                         >mdi-card-plus-outline</v-icon>
+                            @click="changeMovieRate(MovieRate.addedToWatchlist)"
+                         >
+                    {{`mdi-card-plus${movieRate === MovieRate.addedToWatchlist ? '' : '-outline'}`}}
+                         </v-icon>
                     </template>
                 <span>Add to watchlist</span>
             </v-tooltip>
@@ -53,34 +56,33 @@ export default class BottomButtons extends Vue {
 
     @Prop() movieRate!: MovieRate;
 
-    async rateMovie(isLiked: boolean) {
-        await serviceAgent.RateMovie(this.movieId, this.userId, isLiked);
+    @Prop() movieRateChangedCallback: any;
+
+    MovieRate = MovieRate;
+
+    changeMovieRate(movieRate: MovieRate) {
+        let rate = movieRate;
+
+        if (this.movieRate === movieRate) {
+            rate = MovieRate.notRated;
+        }
+
+        this.movieRateChangedCallback(this.movieId, rate);
     }
-
-    async addToWatchlist() {
-        await serviceAgent.AddToWatchlist(this.userId, this.movieId);
-    }
-
-    get userId() {
-        const result = this.$store.state.userId;
-
-        return result;
-    }
-
-    // @Watch('movieRate')
-    // onMovieRateChanged() {
-    // }
 }
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../style/variables';
+
     .bottom-buttons {
         display: grid;
         padding: 20px;
         border: 1px solid white;
-        justify-self: center;
-        justify-content: center;
-        /* background-color: cornflowerblue; */
+
+        .v-icon{
+            color: variables.$secondary-color;
+        }
     }
 
     .m-controls {

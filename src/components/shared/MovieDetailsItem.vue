@@ -1,5 +1,5 @@
 <template>
-    <v-card dark class="movie-details">
+    <v-card class="movie-details">
         <rating/>
         <div class="movie-details-item">
             <v-img class="movie-image" :src="imageSrc"/>

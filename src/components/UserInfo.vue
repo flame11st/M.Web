@@ -1,100 +1,108 @@
 <template>
-    <div class="user-info" dark>
+    <div class="user-info">
         <div v-if="userName">
-            <div class="avatar">
-                <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                        <v-avatar v-on="on">
-                            <img src="https://randomuser.me/api/portraits/women/81.jpg">
-                        </v-avatar>
-                    </template>
-                    <span>{{ userName }}</span>
-                </v-tooltip>
-            </div>
-
-            <div class="icons">
-                <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                        <v-icon dark @click="logOut" v-on="on">mdi-logout</v-icon>
-                    </template>
-                <span>Logout</span>
-            </v-tooltip>
-            </div>
-        </div>
-
-        <div v-else>
-            <div class="avatar">
-                <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                        <v-avatar color="blue" v-on="on">
-                            <v-icon dark>mdi-account-circle</v-icon>
-                        </v-avatar>
-                    </template>
-                    <span>Guest</span>
-                </v-tooltip>
-            </div>
-            <div class="icons">
-                <login />
-                <sign-up />
-            </div>
+            <v-menu
+                transition="slide-y-transition"
+                bottom
+                offset-y
+                content-class="mt-3"
+            >
+                <template v-slot:activator="{ on }">
+                    <div class="avatar" v-on="on">
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on }">
+                                <v-avatar v-on="on">
+                                    <v-icon>mdi-account</v-icon>
+                                </v-avatar>
+                            </template>
+                            <span>{{ userName }}</span>
+                        </v-tooltip>
+                    </div>
+                </template>
+                <v-card width="200" class="user-info-menu-items">
+                    <v-list>
+                        <user-settings />
+                        <v-list-item @click="logOut">
+                            <v-list-item-icon>
+                                <v-icon>mdi-logout</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="'Sign out'" />
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
+            </v-menu>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Login from './identity/login/Login.vue';
-import SignUp from './identity/signUp/SignUp.vue';
 import ServiceAgent from '../services/serviceAgent';
+import GoogleAuthHelper from '@/helpers/GoogleAuthHelper';
+import UserSettings from './UserSettings.vue';
 
 const serviceAgent = new ServiceAgent();
+const googleAuthHelper = new GoogleAuthHelper();
 
 @Component({
     components: {
-        Login,
-        SignUp,
+        UserSettings,
     },
 })
 export default class UserInfo extends Vue {
     async logOut() {
+        const self = this;
+        this.$store.dispatch('showLoader', true);
+
+        if (this.isSignedInThroughGoogle) {
+            await googleAuthHelper.GoogleLogout();
+        }
         await serviceAgent.Logout();
 
         this.$store.dispatch('logout');
-        window.location.replace('/');
+        this.$store.dispatch('clearStore');
+
+        setTimeout(() => {
+            self.$store.dispatch('showLoader', false);
+        }, 500);
     }
 
-    get userName() {
-        const result = this.$store.state.userName;
+    get userName(): string {
+        const result = this.$store.getters.userName;
+
+        return result;
+    }
+
+    get isSignedInThroughGoogle() {
+        const result = this.$store.getters.isSignedInThroughGoogle;
 
         return result;
     }
 }
 </script>
 
-<style>
+<style lang="scss">
+    @use '../style/variables';
+
     .user-info {
-        padding: 10px;
-    }
-
-    .user-info > div {
+        align-items: center;
+        justify-items: center;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
+        max-height: 80px;
 
-    .icons {
-        display: grid;
-        justify-self: start;
-        align-content: center;
-        grid-auto-flow: column;
-    }
+        :hover {
+            cursor: pointer;
+        }
 
-    .icons i {
-        margin-right: 10px;
-        font-size: 35px !important;
-    }
-
-    .avatar {
-        justify-self: center;
+        > div {
+            .avatar {
+                .v-avatar {
+                    background-color: variables.$additional-color;
+                }
+            }
+        }
     }
 </style>
