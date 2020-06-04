@@ -42,14 +42,6 @@
                 </div>
             </v-fab-transition>
         </v-card>
-        <v-snackbar
-            v-model="snackbarOpened"
-            :timeout="2000"
-            top
-            right
-        >
-            {{ snackbarText }}
-        </v-snackbar>
     </div>
 </template>
 
@@ -59,6 +51,7 @@ import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import _ from 'lodash';
 import ServiceAgent from '../services/serviceAgent';
+import EventBus from '../services/eventBus';
 import Buttons from './shared/BottomButtons.vue';
 import MovieRate from '@/enums/movieRate';
 import Movie from '@/objects/movie';
@@ -78,10 +71,6 @@ export default class Search extends Vue {
     items: any = [];
 
     searchText = '';
-
-    snackbarOpened = false;
-
-    snackbarText = '';
 
     debouncedSearch: any;
 
@@ -152,9 +141,9 @@ export default class Search extends Vue {
 
         await serviceAgent.RateMovie(movieId, this.userId, movieRate)
             .then(() => {
+                EventBus.$emit('openSnackbar', { snackbarText: this.getSnackbarText(movieRate), snackbarSuccess: true });
+
                 this.$store.dispatch('setUserMovies');
-                this.snackbarText = this.getSnackbarText(movieRate);
-                this.snackbarOpened = true;
             });
     }
 

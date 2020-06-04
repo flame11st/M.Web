@@ -11,7 +11,7 @@ const requestInterceptor = (request: any) => {
 };
 
 const handleUnauthorizedError = (error: any) => {
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
         return api.get('Identity/RefreshToken').then(() => api.request(error.config));
     }
     return Promise.reject(error);

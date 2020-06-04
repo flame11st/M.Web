@@ -8,7 +8,7 @@ export const setUserIdentity = (context: any) => {
     const userName = CookieHelper.getCookie('user_name');
     const userId = CookieHelper.getCookie('user_id');
 
-    context.commit('setUserIdentity', { userName, userId });
+    context.commit('setUser', { userName, userId });
 };
 
 export const logout = (context: any) => {
@@ -19,10 +19,6 @@ export const clearStore = (context: any) => {
     context.commit('clearStore');
 };
 
-export const showLoader = (context: any, value: boolean) => {
-    context.commit('showLoader', value);
-};
-
 export const setIsSignedInThroughGoogle = (context: any, value: boolean) => {
     context.commit('setIsSignedInThroughGoogle', value);
 };
@@ -30,7 +26,7 @@ export const setIsSignedInThroughGoogle = (context: any, value: boolean) => {
 export const setUserMovies = async (context: any) => {
     const userMovies = await serviceAgent.GetUserMovies(context.state.userId);
 
-    if (userMovies.data.length > 0) {
+    if (userMovies) {
         context.commit('setUserMovies', userMovies.data.map((movie: any) => new Movie(movie)));
     }
 };

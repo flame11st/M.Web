@@ -17,6 +17,7 @@ import Component from 'vue-class-component';
 import Login from './login/Login.vue';
 import SignUp from './signUp/SignUp.vue';
 import GoogleSignIn from './googleSignIn/GoogleSignIn.vue';
+import EventBus from '@/services/eventBus';
 
 @Component({
     components: {
@@ -32,7 +33,7 @@ export default class IdentityButtons extends Vue {
         this.$store.dispatch('setUserMovies');
 
         setTimeout(() => {
-            self.$store.dispatch('showLoader', false);
+            EventBus.$emit('showLoader', false);
         }, 1000);
     }
 }

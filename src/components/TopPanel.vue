@@ -1,7 +1,9 @@
 <template>
     <div class="top-menu">
         <div class="left-block">
-            <img alt="logo" src="../assets/W-logo.png">
+            <a href="/">
+                <img alt="logo" src="../assets/W-logo.png">
+            </a>
         </div>
         <search v-show="userId"/>
         <user-info class="user-info-component"/>
@@ -41,7 +43,7 @@ export default class TopMenu extends Vue {
             grid-template-columns: 3fr 2fr;
             max-width: 100%;
 
-            > img {
+            img {
                 margin-top: 5px;
                 margin-left: 10px;
                 height: 70px;

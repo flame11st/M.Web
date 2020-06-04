@@ -12,6 +12,7 @@ import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import ServiceAgent from '../../../services/serviceAgent';
 import GooglAuthHelper from '@/helpers/GoogleAuthHelper';
+import EventBus from '@/services/eventBus';
 
 const serviceAgent = new ServiceAgent();
 const googlAuthHelper = new GooglAuthHelper();
@@ -21,7 +22,7 @@ export default class GoogleLogin extends Vue {
     @Prop() successSignInCallback!: Function;
 
     async googleAuthCallback(googleUser: any) {
-        this.$store.dispatch('showLoader', true);
+        EventBus.$emit('showLoader', true);
         await serviceAgent.GoogleLogin(googleUser.getAuthResponse().id_token);
 
         this.$store.dispatch('setIsSignedInThroughGoogle', true);

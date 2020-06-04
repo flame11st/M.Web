@@ -1,6 +1,7 @@
 import api from '../helpers/Api';
 import UserDTO from '@/objects/userDTO';
 import MovieRate from '@/enums/movieRate';
+import User from '@/objects/user';
 
 class ServiceAgent {
     Login(email: string, password: string) {
@@ -23,6 +24,10 @@ class ServiceAgent {
         return api.get('Identity/Logout');
     }
 
+    ValidateAdminRequest() {
+        return api.get('Identity/ValidateAdminRequest');
+    }
+
     GetRecommendationForUser(userId: string) {
         return api.get(`movies/GetRecommendation?userId=${userId}`);
     }
@@ -43,12 +48,53 @@ class ServiceAgent {
         return api.get(`User/GetUserMovies?userId=${userId}`);
     }
 
+    ClearUserMovies(userId: string) {
+        return api.get(`User/ClearUserMovies?userId=${userId}`);
+    }
+
+    DeleteUser(userId: string) {
+        return api.get(`User/DeleteUser?userId=${userId}`);
+    }
+
+    GetUserInfo(userId: string) {
+        return api.get(`User/GetUserInfo?userId=${userId}`);
+    }
+
+    ChangeUserInfo(user: User) {
+        return api.post('User/ChangeUserInfo', {
+            Id: user.Id,
+            Name: user.Name,
+            Email: user.Email,
+        });
+    }
+
+    ChangeUserPassword(userId: string, oldPassword: string, newPassword: string) {
+        return api.post('User/ChangeUserPassword', {
+            UserId: userId,
+            OldPassword: oldPassword,
+            NewPassword: newPassword,
+        });
+    }
+
     Search(query: string) {
         return api.get(`movies/Search?query=${query}`);
     }
 
     GoogleLogin(idToken: string) {
         return api.get(`Identity/GoogleLogin?idToken=${idToken}`);
+    }
+
+    // Administration part
+    GetAllJobManagerCommands() {
+        return api.get('JobManager/GetAllCommands');
+    }
+
+    RunCommand(command: string) {
+        return api.get(`JobManager/RunCommand?command=${command}`);
+    }
+
+    UpdateImdbRatingsFromFile(formData: FormData) {
+        return api.post('movies/UpdateImdbRatingsFromFile', formData);
     }
 }
 

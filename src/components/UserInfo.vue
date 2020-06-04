@@ -1,6 +1,6 @@
 <template>
     <div class="user-info">
-        <div v-if="userName">
+        <div v-if="userId">
             <v-menu
                 transition="slide-y-transition"
                 bottom
@@ -15,19 +15,31 @@
                                     <v-icon>mdi-account</v-icon>
                                 </v-avatar>
                             </template>
-                            <span>{{ userName }}</span>
+                            <span v-if="user">{{ user.Name }}</span>
                         </v-tooltip>
                     </div>
                 </template>
                 <v-card width="200" class="user-info-menu-items">
                     <v-list>
-                        <user-settings />
+                        <user-settings :user="user" :logoutCallback="logOut"/>
+
                         <v-list-item @click="logOut">
                             <v-list-item-icon>
                                 <v-icon>mdi-logout</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title v-text="'Sign out'" />
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item v-if="user.Role === 'Admin'">
+                            <v-list-item-icon>
+                                <v-icon>mdi-cogs</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <a href="/admin">Admin</a>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -40,9 +52,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 import ServiceAgent from '../services/serviceAgent';
 import GoogleAuthHelper from '@/helpers/GoogleAuthHelper';
 import UserSettings from './UserSettings.vue';
+import User from '@/objects/user';
+import EventBus from '@/services/eventBus';
 
 const serviceAgent = new ServiceAgent();
 const googleAuthHelper = new GoogleAuthHelper();
@@ -53,9 +68,11 @@ const googleAuthHelper = new GoogleAuthHelper();
     },
 })
 export default class UserInfo extends Vue {
+    user: User | null = null;
+
     async logOut() {
         const self = this;
-        this.$store.dispatch('showLoader', true);
+        EventBus.$emit('showLoader', true);
 
         if (this.isSignedInThroughGoogle) {
             await googleAuthHelper.GoogleLogout();
@@ -66,12 +83,12 @@ export default class UserInfo extends Vue {
         this.$store.dispatch('clearStore');
 
         setTimeout(() => {
-            self.$store.dispatch('showLoader', false);
+            EventBus.$emit('showLoader', false);
         }, 500);
     }
 
-    get userName(): string {
-        const result = this.$store.getters.userName;
+    get userId(): string {
+        const result = this.$store.getters.userId;
 
         return result;
     }
@@ -80,6 +97,21 @@ export default class UserInfo extends Vue {
         const result = this.$store.getters.isSignedInThroughGoogle;
 
         return result;
+    }
+
+    created() {
+        this.setUser();
+    }
+
+    async setUser() {
+        const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
+        this.user = new User(userInfoResponse.data);
+    }
+
+    @Watch('userId')
+    async onUserIdChanged() {
+        const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
+        this.user = new User(userInfoResponse.data);
     }
 }
 </script>

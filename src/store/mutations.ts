@@ -1,7 +1,7 @@
 import State from './state';
 import Movie from '@/objects/movie';
 
-export const setUserIdentity = (state: State, userIdentityData: any) => {
+export const setUser = (state: State, userIdentityData: any) => {
     state.userId = userIdentityData.userId;
     state.userName = userIdentityData.userName;
 };
@@ -18,10 +18,6 @@ export const clearStore = (state: State) => {
 
 export const setUserMovies = (state: State, userMovies: Movie[]) => {
     state.userMovies = userMovies;
-};
-
-export const showLoader = (state: State, value: boolean) => {
-    state.showLoader = value;
 };
 
 export const setIsSignedInThroughGoogle = (state: State, value: boolean) => {

@@ -72,6 +72,7 @@ import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import ServiceAgent from '../../../services/serviceAgent';
 import GooglAuthHelper from '@/helpers/GoogleAuthHelper';
+import EventBus from '@/services/eventBus';
 
 const serviceAgent = new ServiceAgent();
 const googlAuthHelper = new GooglAuthHelper();
@@ -100,11 +101,18 @@ export default class Login extends Vue {
     async loginSubmit() {
         (this.$refs.form as any).validate();
         if (!this.formValid) return;
-        this.$store.dispatch('showLoader', true);
 
-        await serviceAgent.Login(this.email, this.password);
+        EventBus.$emit('showLoader', true);
 
-        this.successSignInCallback();
+        const self = this;
+
+        serviceAgent.Login(this.email, this.password).then(() => {
+            self.successSignInCallback();
+        }).catch(() => {
+            EventBus.$emit('openSnackbar', { snackbarText: 'Incorrect Email or Password. Please try again', snackbarSuccess: false });
+
+            EventBus.$emit('showLoader', false);
+        });
     }
 }
 </script>
@@ -143,5 +151,9 @@ export default class Login extends Vue {
                 color: variables.$fonts-color !important;
             }
         }
+    }
+
+    .v-snack__wrapper {
+        background-color: #F44336;
     }
 </style>

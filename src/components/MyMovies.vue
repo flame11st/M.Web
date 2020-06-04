@@ -72,6 +72,7 @@ import ServiceAgent from '../services/serviceAgent';
 import Movie from '../objects/movie';
 import MovieRate from '../enums/movieRate';
 import MovieType from '@/enums/movieType';
+import EventBus from '@/services/eventBus';
 
 const serviceAgent = new ServiceAgent();
 
@@ -142,9 +143,10 @@ export default class MyMovies extends Vue {
     @Watch('isWatchlist')
     onIsWatchlistChanged() {
         const self = this;
-        self.$store.dispatch('showLoader', true);
+        EventBus.$emit('showLoader', true);
+
         setTimeout(() => {
-            self.$store.dispatch('showLoader', false);
+            EventBus.$emit('showLoader', false);
         }, 500);
     }
 

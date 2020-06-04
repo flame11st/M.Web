@@ -36,14 +36,15 @@
                             label="Password"
                             type="password"
                             required
+                            counter
                             :rules="[validationRules.required, validationRules.passwordLength]"
                             v-model="userDTO.Password"
                         ></v-text-field>
                         <v-text-field
-                        lazy-validation
                             label="Confirm Password"
                             type="password"
                             required
+                            counter
                             :rules="[validationRules.required , validationRules.passwordConfirm]"
                         ></v-text-field>
                     </v-form>
