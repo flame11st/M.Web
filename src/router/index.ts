@@ -31,8 +31,4 @@ const router = new VueRouter({
     routes,
 });
 
-const requireAdminPermissions = () => {
-    debugger;
-};
-
 export default router;
