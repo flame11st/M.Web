@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseUrl = process.env.NODE_ENV === 'production' ? 'https://mwebapi1.azurewebsites.net/api/' : 'https://localhost:44321/';
+
 const api = axios.create({
-    baseURL: 'https://localhost:44321/api/',
+    baseURL: baseUrl,
 });
 
 const requestInterceptor = (request: any) => {

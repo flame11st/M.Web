@@ -2,17 +2,22 @@
     <div class="admin">
         <v-card class="job-manager">
             <v-list>
-                <v-subheader>Job manager commands</v-subheader>
+                <v-subheader>
+                    Job manager commands
+                    <v-btn icon @click="refreshCommands" class="refresh-button">
+                        <v-icon color='blue'>mdi-refresh</v-icon>
+                    </v-btn>
+                </v-subheader>
                 <v-divider />
                 <template v-for="(command, index) in commands">
-                    <v-list-item  :key="command">
+                    <v-list-item  :key="command.Name">
                         <template>
                             <v-list-item-content>
-                                <div class="job-manager-command-name">{{ command }}</div>
+                                <div class="job-manager-command-name">{{ command.Name }}</div>
                             </v-list-item-content>
                             <v-list-item-icon>
                                 <v-btn icon @click="runCommand(command)">
-                                    <v-icon color="green">mdi-play</v-icon>
+                                    <v-icon :color="command.Running ? 'gray' : 'green'">mdi-play</v-icon>
                                 </v-btn>
                             </v-list-item-icon>
                         </template>
@@ -37,23 +42,32 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import ServiceAgent from '@/services/serviceAgent';
 import EventBus from '@/services/eventBus';
+import Job from '@/objects/job';
 
 const serviceAgent = new ServiceAgent();
 
 @Component
 export default class Admin extends Vue {
-    commands: string[] = [];
+    commands: Job[] = [];
 
     ratingFile: any = [];
 
-    async mounted() {
-        const commandsResponse = await serviceAgent.GetAllJobManagerCommands();
-        this.commands = commandsResponse.data;
+    mounted() {
+        this.refreshCommands();
     }
 
-    runCommand(command: string) {
-        serviceAgent.RunCommand(command);
-        EventBus.$emit('openSnackbar', { snackbarText: `Command ${command} runned`, snackbarSuccess: true });
+    runCommand(command: Job) {
+        if (!command.Running) {
+            serviceAgent.RunCommand(command.Name);
+            EventBus.$emit('openSnackbar', { snackbarText: `Command ${command.Name} succesfully runned`, snackbarSuccess: true });
+        } else {
+            EventBus.$emit('openSnackbar', { snackbarText: `Command ${command.Name} already runned`, snackbarSuccess: false });
+        }
+    }
+
+    async refreshCommands() {
+        const commandsResponse = await serviceAgent.GetAllJobManagerCommands();
+        this.commands = commandsResponse.data.map((job: any) => new Job(job));
     }
 
     updateImdbRatings() {
@@ -75,6 +89,15 @@ export default class Admin extends Vue {
 
 
         .job-manager {
+            .v-subheader {
+                display: grid;
+                grid-auto-flow: column;
+
+                .refresh-button {
+                    justify-self: end;
+                }
+            }
+
             .v-list-item {
                 .v-list-item__icon {
                     margin: 0 !important;

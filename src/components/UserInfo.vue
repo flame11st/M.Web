@@ -32,7 +32,7 @@
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item v-if="user.Role === 'Admin'">
+                        <v-list-item v-if="user && user.Role === 'Admin'">
                             <v-list-item-icon>
                                 <v-icon>mdi-cogs</v-icon>
                             </v-list-item-icon>
@@ -104,12 +104,16 @@ export default class UserInfo extends Vue {
     }
 
     async setUser() {
+        if (!this.userId) return;
+
         const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
         this.user = new User(userInfoResponse.data);
     }
 
     @Watch('userId')
     async onUserIdChanged() {
+        if (!this.userId) return;
+
         const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
         this.user = new User(userInfoResponse.data);
     }

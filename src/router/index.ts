@@ -9,7 +9,7 @@ const serviceAgent = new ServiceAgent();
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/myMovies', component: MyMovies },
+    { path: '/', component: MyMovies },
     {
         path: '/admin',
         component: Admin,
@@ -22,7 +22,6 @@ const routes = [
             }
         },
     },
-    { path: '/', redirect: '/myMovies' },
 ];
 
 const router = new VueRouter({
