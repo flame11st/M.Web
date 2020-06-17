@@ -28,8 +28,8 @@
                     Starring: {{ movie.Actors.map(a => a.Name).join(', ') }}
                 </p>
 
-                <p v-show="isItemExpanded && movie.Countries.length">
-                    Countries: {{ movie.Countries.join(', ') }}
+                <p v-show="isItemExpanded">
+                    Countries: {{ movie.Countries }}
                 </p>
             </div>
             <MovieListItemButtons :movie="movie" :expanded="isItemExpanded" />
