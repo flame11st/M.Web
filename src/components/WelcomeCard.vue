@@ -47,7 +47,7 @@ export default class WelcomeCard extends Vue {
             padding: 20px;
             box-shadow: 0 0 10px variables.$additional-color;
             border-radius: 5px;
-            width: 45%;
+            width: 95%;
             height: 400px;
             background-color: variables.$secondary-color;
             display: grid;
@@ -56,6 +56,22 @@ export default class WelcomeCard extends Vue {
             .header {
                 text-align: center;
                 font-size: 20px;
+            }
+        }
+    }
+
+    @media screen and (min-width: 510px) {
+        .welcome-card {
+            .welcome-card-content {
+                width: 500px;
+            }
+        }
+    }
+
+    @media screen and (min-width: 900px) {
+        .welcome-card {
+            .welcome-card-content {
+                width: 500px;
             }
         }
     }

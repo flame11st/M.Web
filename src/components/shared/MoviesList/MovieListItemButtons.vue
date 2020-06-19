@@ -4,21 +4,32 @@
             v-model="opened"
             :right="true"
             direction="left"
-            :open-on-hover="true"
             transition="slide-x-reverse-transition"
         >
             <template v-slot:activator>
                 <v-btn v-model="opened" dark fab small class="activator">
-                    <v-icon v-show="opened">mdi-close</v-icon>
-                    <v-icon v-show="!opened && movie.MovieRate === MovieRate.addedToWatchlist">
+                    <v-icon
+                        v-show="opened"
+                        @click.stop="opened = !opened"
+                    >mdi-close</v-icon>
+                    <v-icon
+                        v-show="!opened && movie.MovieRate === MovieRate.addedToWatchlist"
+                        @click.stop="opened = !opened"
+                    >
                         mdi-check-bold
                     </v-icon>
 
-                    <v-icon v-show="!opened && movie.MovieRate === MovieRate.liked">
+                    <v-icon
+                        v-show="!opened && movie.MovieRate === MovieRate.liked"
+                        @click.stop="opened = !opened"
+                    >
                         mdi-thumb-up
                     </v-icon>
 
-                    <v-icon v-show="!opened && movie.MovieRate === MovieRate.notLiked">
+                    <v-icon
+                        v-show="!opened && movie.MovieRate === MovieRate.notLiked"
+                        @click.stop="opened = !opened"
+                    >
                         mdi-thumb-down
                     </v-icon>
                 </v-btn>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import EventBus from '@/services/eventBus';
 
 const baseUrl = process.env.NODE_ENV === 'production' ? 'https://mwebapi1.azurewebsites.net/api/' : 'https://localhost:44321/';
 
@@ -14,7 +15,11 @@ const requestInterceptor = (request: any) => {
 
 const handleUnauthorizedError = (error: any) => {
     if (error.response && error.response.status === 401) {
-        return api.get('Identity/RefreshToken').then(() => api.request(error.config));
+        return api.get('Identity/RefreshToken')
+            .then(() => api.request(error.config))
+            .catch(() => {
+                EventBus.$emit('logout');
+            });
     }
     return Promise.reject(error);
 };

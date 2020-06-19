@@ -1,9 +1,9 @@
 <template>
-    <v-card class="movie-list-item" :class="{ 'expanded' : isItemExpanded }" @click="itemClickHandler">
+    <v-card class="movie-list-item" :class="{ 'expanded' : isItemExpanded }">
         <div class="movie-list-item-fields">
-            <img class="movie-image" :src="imageSrc"/>
+            <img class="movie-image" :src="imageSrc"  @click="itemClickHandler"/>
 
-            <div class="movie-list-item-text-fields">
+            <div class="movie-list-item-text-fields" @click="itemClickHandler">
                 <p class="movie-list-item-title">{{ movie.Title }}</p>
 
                 <p v-show="isItemExpanded">{{ movie.Tagline }}</p>
@@ -35,12 +35,12 @@
             <MovieListItemButtons :movie="movie" :expanded="isItemExpanded" />
         </div>
 
-        <div class="movie-list-item-rating">
+        <div class="movie-list-item-rating" @click="itemClickHandler">
             <rating :movieRating="movie.Rating" :scores="movie.Scores" />
             <span v-show="isItemExpanded">{{ movie.Scores ? `Scores: ${movie.Scores}` : 'Not rated yet'}}</span>
         </div>
 
-        <div class="movie-list-item-overview">
+        <div class="movie-list-item-overview" @click="itemClickHandler">
             {{ movie.Overview }}
         </div>
     </v-card>
@@ -88,7 +88,17 @@ export default class MovieListItem extends Vue {
         this.isItemExpanded = !this.isItemExpanded;
         let timeout = 0;
         const area = document.getElementsByClassName('my-movies-list')[0] as HTMLElement;
-        const targetElement = event.currentTarget as HTMLElement;
+        const clickedItem = event.currentTarget as HTMLElement;
+        let targetElement!: HTMLElement;
+
+        if (clickedItem.parentElement?.classList.contains('movie-list-item')) {
+            targetElement = clickedItem.parentElement;
+        } else if (clickedItem.parentElement?.parentElement?.classList.contains('movie-list-item')) {
+            targetElement = clickedItem.parentElement.parentElement;
+        }
+
+        if (!targetElement) return;
+
         const itemsCount = targetElement.parentElement?.children.length;
 
         if (itemsCount && targetElement.clientHeight * itemsCount < area.clientHeight) {
@@ -115,9 +125,9 @@ export default class MovieListItem extends Vue {
         transition: all .5s ease;
         display: flex;
         flex-direction: column;
-        padding: 15px;
-        width: 55%;
-        max-height: 150px;
+        padding: 7px;
+        width: 90%;
+        max-height: 120px;
         overflow: hidden;
 
         .movie-list-item-fields {
@@ -127,24 +137,27 @@ export default class MovieListItem extends Vue {
 
             .movie-list-item-text-fields p{
                 margin-bottom: 6px;
+                font-size: 14px;
             }
 
             .movie-list-item-text-fields {
                 height: 120px;
                 width: 100%;
-                padding-left: 20px;
+                padding-left: 7px;
+                cursor: pointer;
             }
 
             .movie-list-item-title {
                 color: variables.$additional-color;
-                font-size: 20px;
+                font-size: 14px;
                 font-weight: bold;
             }
 
             .movie-image {
-                height: 120px;
-                transition: all .5s ease;
+                height: 106px;
+                transition: all .7s ease;
                 border-radius: 4px;
+                cursor: pointer;
             }
         }
 
@@ -154,11 +167,12 @@ export default class MovieListItem extends Vue {
             grid-auto-flow: column;
             grid-template-columns: 200px 1fr;
             height: 55px;
+            cursor: pointer;
 
             .rating {
                 display: grid;
                 justify-self: start;
-                transition: all .5s ease;
+                transition: all .7s ease;
                 width: 80px;
             }
 
@@ -168,13 +182,14 @@ export default class MovieListItem extends Vue {
         }
 
         .movie-list-item-overview {
+            cursor: pointer;
             text-overflow: ellipsis;
             max-height: 100%;
             overflow: hidden;
         }
 
         &.expanded {
-            max-height: Calc(100vh - 105px);
+            max-height: Calc(100vh + 205px);
             grid-template-columns: 1fr;
             height: fit-content;
 
@@ -205,6 +220,63 @@ export default class MovieListItem extends Vue {
         &.v-card {
             background-color: variables.$secondary-color !important;
             color: variables.$fonts-color;
+        }
+    }
+
+    @media screen and (min-width: 500px) {
+        .movie-list-item {
+            padding: 15px;
+            max-height: 150px;
+
+            .movie-list-item-fields {
+                .movie-image {
+                    height: 120px;
+                }
+
+                .movie-list-item-text-fields {
+                    padding-left: 20px;
+
+                    p {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 900px) {
+        .movie-list-item {
+            width: 80%;
+
+            .movie-list-item-fields {
+                .movie-image {
+                    height: 120px;
+                }
+
+                .movie-list-item-title {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 1100px) {
+        .movie-list-item {
+            width: 60%;
+
+            .movie-list-item-fields .movie-list-item-title {
+                font-size: 18px;
+            }
+        }
+    }
+
+    @media screen and (min-width: 1500px) {
+        .movie-list-item {
+            width: 50%;
+
+            .movie-list-item-fields .movie-list-item-title {
+                font-size: 20px;
+            }
         }
     }
 </style>

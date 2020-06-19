@@ -17,7 +17,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import MovieDetailsItem from './shared/MovieDetailsItem.vue';
 import BottomButtons from './shared/BottomButtons.vue';
 import ServiceAgent from '../services/serviceAgent';
 import MovieRate from '../enums/movieRate';
@@ -26,7 +25,6 @@ const serviceAgent = new ServiceAgent();
 
 @Component({
     components: {
-        MovieDetailsItem,
         BottomButtons,
     },
 })
@@ -43,23 +41,23 @@ export default class MovieRecommendations extends Vue {
         return result;
     }
 
-    getRecomendation() {
-        this.pendingLoad = true;
+    // getRecomendation() {
+    //     this.pendingLoad = true;
 
-        serviceAgent.GetRecommendationForUser(this.userId).then((r) => {
-            this.movieId = r.data;
+    //     serviceAgent.GetRecommendationForUser(this.userId).then((r) => {
+    //         this.movieId = r.data;
 
-            setTimeout(() => {
-                this.pendingLoad = false;
-            }, 500);
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
+    //         setTimeout(() => {
+    //             this.pendingLoad = false;
+    //         }, 500);
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     });
+    // }
 
-    created() {
-        this.getRecomendation();
-    }
+    // created() {
+    //     this.getRecomendation();
+    // }
 }
 </script>
 

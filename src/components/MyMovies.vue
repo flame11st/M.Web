@@ -161,7 +161,7 @@ export default class MyMovies extends Vue {
 
     .my-movies {
         display: grid;
-        grid-template-columns: 1fr 8fr;
+        grid-template-columns: 1fr;
         height: 100%;
         align-items: center;
         padding-top: 10px;
@@ -217,7 +217,7 @@ export default class MyMovies extends Vue {
 
     .my-movies-buttons {
         width: 100%;
-        display: grid;
+        display: none;
         justify-items: center;
         grid-template-columns: 1fr 4fr;
 
@@ -251,6 +251,16 @@ export default class MyMovies extends Vue {
                     color: variables.$additional-color !important;
                     transition: color 2s;
                 }
+            }
+        }
+    }
+
+    @media screen and (min-width: 900px) {
+        .my-movies {
+            grid-template-columns: 1fr 8fr;
+
+            .my-movies-buttons {
+                display: grid;
             }
         }
     }

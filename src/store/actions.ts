@@ -1,6 +1,7 @@
 import CookieHelper from '../helpers/CookieHelper';
 import ServiceAgent from '@/services/serviceAgent';
 import Movie from '@/objects/movie';
+import EventBus from '@/services/eventBus';
 
 const serviceAgent = new ServiceAgent();
 
@@ -9,6 +10,14 @@ export const setUserIdentity = (context: any) => {
     const userId = CookieHelper.getCookie('user_id');
 
     context.commit('setUser', { userName, userId });
+};
+
+export const setIsUserAuthorized = async (context: any) => {
+    context.commit('setIsUserAuthorized', false);
+    const response = await serviceAgent.CheckAuthorization();
+
+    if (response) context.commit('setIsUserAuthorized', response.data);
+    else context.commit('setIsUserAuthorized', false);
 };
 
 export const logout = (context: any) => {

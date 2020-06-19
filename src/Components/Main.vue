@@ -2,10 +2,10 @@
     <v-app>
         <div id="main">
             <div id="top-panel-component">
-                <top-panel/>
+                <top-panel v-if="isUserAuthorized"/>
             </div>
 
-            <div v-if="userId" id="component-placeholder">
+            <div v-if="isUserAuthorized" id="component-placeholder">
                 <router-view />
             </div>
             <div v-else id="welcome-card-component">
@@ -52,13 +52,15 @@ export default class Main extends Vue {
 
     showLoader = false;
 
-    get userId() {
-        const result = this.$store.getters.userId;
+    get isUserAuthorized() {
+        const result = this.$store.getters.isUserAuthorized;
 
         return result;
     }
 
     created() {
+        this.$store.dispatch('setIsUserAuthorized');
+
         EventBus.$on('openSnackbar', (data: any) => {
             this.snackbarOpened = true;
             this.snackbarText = data.snackbarText;

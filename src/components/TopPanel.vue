@@ -34,12 +34,12 @@ export default class TopMenu extends Vue {
 <style lang="scss">
     .top-menu {
         display: grid;
-        grid-template-columns: 1fr 8fr;
+        grid-template-columns: 1fr;
         height: 80px;
         box-shadow: 0px 0px 6px #a6a5a5;
 
         .left-block {
-            display: grid;
+            display: none;
             grid-template-columns: 3fr 2fr;
             max-width: 100%;
 
@@ -54,6 +54,16 @@ export default class TopMenu extends Vue {
             position: absolute;
             left: 120px;
             top: 16px;
+        }
+    }
+
+    @media screen and (min-width: 900px) {
+        .top-menu {
+            grid-template-columns: 1fr 8fr;
+
+            .left-block {
+                display: grid;
+            }
         }
     }
 </style>

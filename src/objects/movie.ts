@@ -12,7 +12,6 @@ class Movie {
         this.Id = movieDTO.id;
         this.Overview = movieDTO.overview;
         this.PosterPath = movieDTO.posterPath;
-        this.ReleaseDate = movieDTO.releaseDate;
         this.Tagline = movieDTO.tagline;
         this.Title = movieDTO.title;
         this.MovieRate = movieDTO.movieRate;
@@ -30,8 +29,6 @@ class Movie {
     Title!: string;
 
     Overview!: string;
-
-    ReleaseDate!: string;
 
     Tagline!: string;
 

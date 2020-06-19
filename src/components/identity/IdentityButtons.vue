@@ -47,7 +47,7 @@ export default class IdentityButtons extends Vue {
         justify-items: center;
         justify-self: center;
         align-items: center;
-        width: 60%;
+        width: 90%;
 
         button.v-btn {
             color: variables.$fonts-color;

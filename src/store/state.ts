@@ -8,6 +8,8 @@ class State {
     userMovies: Movie[] = [];
 
     isSignedInThroughGoogle: boolean = false;
+
+    isUserAuthorized = false;
 }
 
 export default State;

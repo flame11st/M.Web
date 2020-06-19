@@ -66,8 +66,12 @@ export default class Admin extends Vue {
     }
 
     async refreshCommands() {
+        EventBus.$emit('showLoader', true);
+
         const commandsResponse = await serviceAgent.GetAllJobManagerCommands();
         this.commands = commandsResponse.data.map((job: any) => new Job(job));
+
+        EventBus.$emit('showLoader', false);
     }
 
     updateImdbRatings() {

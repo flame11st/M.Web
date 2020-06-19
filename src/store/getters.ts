@@ -9,3 +9,5 @@ export const userId = (state: State) => state.userId;
 export const userName = (state: State) => state.userName;
 
 export const isSignedInThroughGoogle = (state: State) => state.isSignedInThroughGoogle;
+
+export const isUserAuthorized = (state: State) => state.isUserAuthorized;

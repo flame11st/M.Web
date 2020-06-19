@@ -18,13 +18,13 @@
                 indeterminate
             ></v-progress-linear>
             <v-fab-transition>
-                <div v-show="items.length > 0">
+                <div v-show="items.length > 0" class="seach-finded-items">
                     <v-card
-                        class="finded-item"
+                        class="seach-finded-item"
                         v-for="(item, index) in items"
                         :key="index"
                     >
-                        <v-img class="finded-item-image" :src="imageUrl + item.PosterPath"/>
+                        <v-img class="seach-finded-item-image" :src="imageUrl + item.PosterPath"/>
 
                         <div>
                             <h3>{{ item.Title }}</h3>
@@ -55,6 +55,7 @@ import EventBus from '../services/eventBus';
 import Buttons from './shared/BottomButtons.vue';
 import MovieRate from '@/enums/movieRate';
 import Movie from '@/objects/movie';
+import MovieSearchDTO from '@/objects/movieSearchDTO';
 
 const serviceAgent = new ServiceAgent();
 
@@ -143,7 +144,9 @@ export default class Search extends Vue {
             .then(() => {
                 EventBus.$emit('openSnackbar', { snackbarText: this.getSnackbarText(movieRate), snackbarSuccess: true });
 
-                this.$store.dispatch('setUserMovies');
+                setTimeout(() => {
+                    this.$store.dispatch('setUserMovies');
+                }, 1000);
             });
     }
 
@@ -151,9 +154,9 @@ export default class Search extends Vue {
         const self = this;
         const movies = await serviceAgent.Search(this.searchText);
 
-        this.items = movies.data.map((m: any):Movie => {
-            const result = new Movie(m);
-            const intersectedMovies = self.userMovies.filter((um: Movie) => result.Id === um.Id);
+        this.items = movies.data.map((m: any): MovieSearchDTO => {
+            const result = new MovieSearchDTO(m);
+            const intersectedMovies = self.userMovies.filter((um: MovieSearchDTO) => result.Id === um.Id);
 
             if (intersectedMovies.length > 0) result.MovieRate = intersectedMovies[0].MovieRate;
 
@@ -180,30 +183,31 @@ export default class Search extends Vue {
         }
 
         .search-panel {
-            width: 55%;
+            width: 90%;
             z-index: 10;
 
-            // .search-input {
-            //     margin-bottom: ;
-            // }
+            .seach-finded-items {
+                max-height: 90vh;
+                overflow: auto;
 
-            .finded-item {
-                padding: 10px;
-                display: grid;
-                grid-template-columns: 1fr 5fr 200px;
+                .seach-finded-item {
+                    padding: 10px;
+                    display: grid;
+                    grid-template-columns: 1fr 5fr 200px;
 
-                .buttons {
-                    align-self: center;
-                }
+                    .buttons {
+                        align-self: center;
+                    }
 
-                p {
-                    padding-top: 8px;
-                    margin-bottom: 0;
-                }
+                    p {
+                        padding-top: 8px;
+                        margin-bottom: 0;
+                    }
 
-                .finded-item-image {
-                    width: 60px;
-                    height: 90px;
+                    .seach-finded-item-image {
+                        width: 60px;
+                        height: 90px;
+                    }
                 }
             }
 
@@ -217,6 +221,24 @@ export default class Search extends Vue {
                 .v-input__prepend-inner {
                     padding-right: 10px;
                 }
+            }
+        }
+
+        @media screen and (min-width: 900px) {
+            .search-panel {
+                width: 80%;
+            }
+        }
+
+        @media screen and (min-width: 1100px) {
+            .search-panel {
+                width: 60%;
+            }
+        }
+
+        @media screen and (min-width: 1500px) {
+            .search-panel {
+                width: 50%;
             }
         }
     }

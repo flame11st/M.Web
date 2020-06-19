@@ -101,12 +101,18 @@ export default class UserInfo extends Vue {
 
     created() {
         this.setUser();
+        EventBus.$on('logout', (value: any) => {
+            this.logOut();
+        });
     }
 
     async setUser() {
         if (!this.userId) return;
 
         const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
+
+        if (!userInfoResponse) return;
+
         this.user = new User(userInfoResponse.data);
     }
 
@@ -115,6 +121,9 @@ export default class UserInfo extends Vue {
         if (!this.userId) return;
 
         const userInfoResponse = await serviceAgent.GetUserInfo(this.userId);
+
+        if (!userInfoResponse) return;
+
         this.user = new User(userInfoResponse.data);
     }
 }

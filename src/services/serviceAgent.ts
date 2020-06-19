@@ -4,6 +4,10 @@ import MovieRate from '@/enums/movieRate';
 import User from '@/objects/user';
 
 class ServiceAgent {
+    CheckAuthorization() {
+        return api.get('Identity/CheckAuthorization');
+    }
+
     Login(email: string, password: string) {
         return api.post('Identity/login', {
             Email: email,
@@ -26,14 +30,6 @@ class ServiceAgent {
 
     ValidateAdminRequest() {
         return api.get('Identity/ValidateAdminRequest');
-    }
-
-    GetRecommendationForUser(userId: string) {
-        return api.get(`movies/GetRecommendation?userId=${userId}`);
-    }
-
-    GetMovie(id: string) {
-        return api.get(`movies/getmovie?id=${id}`);
     }
 
     RateMovie(movieId: string, userId: string, movieRate: MovieRate) {

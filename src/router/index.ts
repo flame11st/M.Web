@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
     { path: '/', component: MyMovies },
     {
-        path: '/#admin',
+        path: '/admin',
         component: Admin,
         beforeEnter: async (to: any, from: any, next: any) => {
             const isUserAdmin = await (await serviceAgent.ValidateAdminRequest()).data;

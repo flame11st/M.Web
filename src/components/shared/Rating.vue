@@ -1,7 +1,7 @@
 <template>
     <div class="rating">
         <v-progress-linear
-            v-model="movieRating"
+            value="movieRating"
             :color="color"
             height="25"
             rounded
@@ -52,6 +52,11 @@ export default class Rating extends Vue {
         /* background-color: greenyellow; */
         .v-progress-linear__background {
             background-color: variables.$additional-color;
+        }
+
+        .v-progress-linear__content {
+            background-color: variables.$additional-color;
+            opacity: .3;
         }
     }
 </style>

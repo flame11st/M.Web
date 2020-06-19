@@ -8,7 +8,6 @@
                 <span v-if="movie">
                     <h2 class="movie-title"> {{ movie.Title }} </h2>
                     <p > {{ movie.Overview }} </p>
-                    <p > {{ movie.ReleaseDate }} </p>
                     <div>
                         Starring: {{ actors.map(a => a.Name).join(', ') }}
                     </div>
@@ -42,18 +41,18 @@ export default class MovieDetailsItem extends Vue {
 
     @Prop() movieId!: string;
 
-    async getMovie() {
-        const result = await serviceAgent.GetMovie(this.movieId);
+    // async getMovie() {
+    //     // const result = await serviceAgent.GetMovie(this.movieId);
 
-        this.movie = new Movie(result.data);
-    }
+    //     this.movie = new Movie(result.data);
+    // }
 
-    @Watch('movieId')
-    onMovieIdChanged(val: string) {
-        if (val !== '00000000-0000-0000-0000-000000000000') {
-            this.getMovie();
-        }
-    }
+    // @Watch('movieId')
+    // onMovieIdChanged(val: string) {
+    //     if (val !== '00000000-0000-0000-0000-000000000000') {
+    //         this.getMovie();
+    //     }
+    // }
 
     get imageSrc() {
         let src = '';
