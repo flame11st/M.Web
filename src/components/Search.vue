@@ -224,6 +224,12 @@ export default class Search extends Vue {
             }
         }
 
+        @media screen and (max-width: 500px) {
+            .seach-finded-item {
+                grid-template-columns: 1fr 3fr 50px !important;
+            }
+        }
+
         @media screen and (min-width: 900px) {
             .search-panel {
                 width: 80%;

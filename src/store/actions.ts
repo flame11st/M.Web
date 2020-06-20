@@ -17,10 +17,9 @@ export const setIsUserAuthorized = async (context: any) => {
     const response = await serviceAgent.CheckAuthorization();
 
     if (response) context.commit('setIsUserAuthorized', response.data);
-    else {
-        context.commit('setIsUserAuthorized', false);
-        context.commit('setIsLoaded', true);
-    }
+    else context.commit('setIsUserAuthorized', false);
+
+    context.commit('setIsLoaded', true);
 };
 
 export const logout = (context: any) => {
@@ -42,6 +41,5 @@ export const setUserMovies = async (context: any) => {
         context.commit('setUserMovies', userMovies.data.map((movie: any) => new Movie(movie)));
     }
 
-    context.commit('setIsLoaded', true);
     EventBus.$emit('setMoviesLoading', false);
 };
