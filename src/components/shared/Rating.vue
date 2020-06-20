@@ -5,7 +5,6 @@
             :color="color"
             height="25"
             rounded
-            reactive
         >
             <strong v-if="scores !== 0">{{ Math.ceil(movieRating) }}%</strong>
             <strong v-else> - / - </strong>

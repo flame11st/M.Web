@@ -134,7 +134,7 @@ export default class MovieListItemButtons extends Vue {
 
     .movie-list-item-buttons {
         transition: all .5s ease;
-        height: 120px;
+        height: 105px;
         display: grid;
         justify-items: end;
         align-items: center;
@@ -153,6 +153,20 @@ export default class MovieListItemButtons extends Vue {
 
         &.expanded {
             margin-top: 20px;
+        }
+    }
+
+    @media screen and (min-width: 500px) {
+        .movie-list-item-buttons {
+            height: 120px;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .movie-list-item-buttons {
+            position: absolute;
+            right: 10px;
+            top: 10px;
         }
     }
 </style>

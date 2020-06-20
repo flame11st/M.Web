@@ -1,16 +1,23 @@
 <template>
     <v-app>
         <div id="main">
-            <div id="top-panel-component">
+            <div id="top-panel-component" v-show="isLoaded">
                 <top-panel v-if="isUserAuthorized"/>
             </div>
 
-            <div v-if="isUserAuthorized" id="component-placeholder">
-                <router-view />
+            <loader-top-panel v-show="!isLoaded" />
+
+            <div v-show="isLoaded && !isMoviesLoading">
+                <div v-if="isUserAuthorized" id="component-placeholder">
+                    <router-view />
+                </div>
+                <div v-else id="welcome-card-component">
+                    <welcome-card />
+                </div>
             </div>
-            <div v-else id="welcome-card-component">
-                <welcome-card />
-            </div>
+
+            <loader-my-movies v-show="!isLoaded || isMoviesLoading" />
+
             <v-overlay :value="showLoader">
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
@@ -32,6 +39,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import TopPanel from './TopPanel.vue';
 import WelcomeCard from './WelcomeCard.vue';
+import LoaderTopPanel from './LoaderTopPanel.vue';
+import LoaderMyMovies from './LoaderMyMovies.vue';
 import ServiceAgent from '@/services/serviceAgent';
 import EventBus from '@/services/eventBus';
 
@@ -41,6 +50,8 @@ const serviceAgent = new ServiceAgent();
     components: {
         TopPanel,
         WelcomeCard,
+        LoaderTopPanel,
+        LoaderMyMovies,
     },
 })
 export default class Main extends Vue {
@@ -52,8 +63,16 @@ export default class Main extends Vue {
 
     showLoader = false;
 
+    isMoviesLoading = false;
+
     get isUserAuthorized() {
         const result = this.$store.getters.isUserAuthorized;
+
+        return result;
+    }
+
+    get isLoaded() {
+        const result = this.$store.getters.isLoaded;
 
         return result;
     }
@@ -69,6 +88,10 @@ export default class Main extends Vue {
 
         EventBus.$on('showLoader', (value: any) => {
             this.showLoader = value;
+        });
+
+        EventBus.$on('setMoviesLoading', (value: any) => {
+            this.isMoviesLoading = value;
         });
     }
 }

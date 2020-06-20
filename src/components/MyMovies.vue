@@ -151,6 +151,8 @@ export default class MyMovies extends Vue {
     }
 
     async mounted() {
+        EventBus.$emit('setMoviesLoading', true);
+
         this.$store.dispatch('setUserMovies');
     }
 }
@@ -173,6 +175,7 @@ export default class MyMovies extends Vue {
             overflow: auto;
 
             .my-movies-list-filter {
+                display: none;
                 position: absolute;
                 left: 15px;
                 width: 25%;
@@ -261,6 +264,10 @@ export default class MyMovies extends Vue {
 
             .my-movies-buttons {
                 display: grid;
+            }
+
+            .my-movies-list-filter {
+                display: block !important;
             }
         }
     }

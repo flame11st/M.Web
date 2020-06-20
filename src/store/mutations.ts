@@ -12,6 +12,10 @@ export const setIsUserAuthorized = (state: State, isUserAuthorized: boolean) => 
     state.isUserAuthorized = isUserAuthorized;
 };
 
+export const setIsLoaded = (state: State, isLoaded: boolean) => {
+    state.isLoaded = isLoaded;
+};
+
 export const logout = (state: State) => {
     state.userId = '';
     state.userName = '';

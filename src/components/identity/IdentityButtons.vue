@@ -30,11 +30,8 @@ export default class IdentityButtons extends Vue {
     setUserData() {
         const self = this;
         this.$store.dispatch('setUserIdentity');
-        this.$store.dispatch('setUserMovies');
 
-        setTimeout(() => {
-            EventBus.$emit('showLoader', false);
-        }, 1000);
+        EventBus.$emit('showLoader', false);
     }
 }
 </script>

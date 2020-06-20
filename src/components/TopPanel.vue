@@ -1,6 +1,6 @@
 <template>
-    <div class="top-menu">
-        <div class="left-block">
+    <div class="top-panel">
+        <div class="top-panel-left-block">
             <a href="/">
                 <img alt="logo" src="../assets/W-logo.png">
             </a>
@@ -32,13 +32,13 @@ export default class TopMenu extends Vue {
 </script>
 
 <style lang="scss">
-    .top-menu {
+    .top-panel {
         display: grid;
         grid-template-columns: 1fr;
         height: 80px;
         box-shadow: 0px 0px 6px #a6a5a5;
 
-        .left-block {
+        .top-panel-left-block {
             display: none;
             grid-template-columns: 3fr 2fr;
             max-width: 100%;
@@ -58,10 +58,10 @@ export default class TopMenu extends Vue {
     }
 
     @media screen and (min-width: 900px) {
-        .top-menu {
+        .top-panel {
             grid-template-columns: 1fr 8fr;
 
-            .left-block {
+            .top-panel-left-block {
                 display: grid;
             }
         }

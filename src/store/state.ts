@@ -10,6 +10,8 @@ class State {
     isSignedInThroughGoogle: boolean = false;
 
     isUserAuthorized = false;
+
+    isLoaded = false;
 }
 
 export default State;

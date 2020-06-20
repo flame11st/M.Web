@@ -1,16 +1,30 @@
 <template>
     <v-card class="movie-list-item" :class="{ 'expanded' : isItemExpanded }">
+
+        <div>
+            <p class="movie-list-item-title-mobile">{{ movie.Title }}</p>
+        </div>
+
         <div class="movie-list-item-fields">
-            <img class="movie-image" :src="imageSrc"  @click="itemClickHandler"/>
+            <div style="max-height: 300px">
+                <img class="movie-image" :src="imageSrc"  @click="itemClickHandler"/>
+
+                <div class="movie-list-item-rating-mobile" @click="itemClickHandler">
+                    <rating :movieRating="movie.Rating" :scores="movie.Scores" />
+                    <span>{{ movie.Scores ? `Scores: ${movie.Scores}` : 'Not rated'}}</span>
+                </div>
+            </div>
 
             <div class="movie-list-item-text-fields" @click="itemClickHandler">
                 <p class="movie-list-item-title">{{ movie.Title }}</p>
 
-                <p v-show="isItemExpanded">{{ movie.Tagline }}</p>
+                <v-slide-x-reverse-transition>
+                    <p v-show="isItemExpanded && movie.Tagline !== ''">{{ movie.Tagline }}</p>
+                </v-slide-x-reverse-transition>
 
                 <p>{{ movie.Year }}</p>
 
-                <p>{{ movie.Genres.join(', ') }}</p>
+                <p class="movie-genres">{{ movie.Genres.join(', ') }}</p>
 
                 <p :class="{ 'ma-0' : !isItemExpanded }">
                     {{ movie.MovieType === MovieType.tv ? `${movie.AverageTimeOfEpisode} min / episode` : `${movie.Duration} min` }}
@@ -20,24 +34,28 @@
                     {{ `${movie.SeasonsCount} season${movie.SeasonsCount > 1 ? 's' : ''}` }}
                 </p>
 
-                 <p v-show="isItemExpanded && movie.Directors.length">
-                    {{ `Director${movie.Directors.length > 1 ? 's' : ''}: ` + movie.Directors.map(a => a.Name).join(', ') }}
-                </p>
+                <v-slide-x-reverse-transition>
+                    <div v-show="isItemExpanded" class="movie-expanded-fields">
+                        <p v-show="movie.Directors.length">
+                            {{ `Director${movie.Directors.length > 1 ? 's' : ''}: ` + movie.Directors.map(a => a.Name).join(', ') }}
+                        </p>
 
-                <p v-show="isItemExpanded && movie.Actors.length">
-                    Starring: {{ movie.Actors.map(a => a.Name).join(', ') }}
-                </p>
+                        <p v-show="movie.Actors.length">
+                            Starring: {{ movie.Actors.map(a => a.Name).join(', ') }}
+                        </p>
 
-                <p v-show="isItemExpanded">
-                    Countries: {{ movie.Countries }}
-                </p>
+                        <p>
+                            Countries: {{ movie.Countries }}
+                        </p>
+                    </div>
+                </v-slide-x-reverse-transition>
             </div>
             <MovieListItemButtons :movie="movie" :expanded="isItemExpanded" />
         </div>
 
         <div class="movie-list-item-rating" @click="itemClickHandler">
             <rating :movieRating="movie.Rating" :scores="movie.Scores" />
-            <span v-show="isItemExpanded">{{ movie.Scores ? `Scores: ${movie.Scores}` : 'Not rated yet'}}</span>
+            <span v-show="isItemExpanded">{{ movie.Scores ? `Scores: ${movie.Scores}` : 'Not rated'}}</span>
         </div>
 
         <div class="movie-list-item-overview" @click="itemClickHandler">
@@ -127,13 +145,27 @@ export default class MovieListItem extends Vue {
         flex-direction: column;
         padding: 7px;
         width: 90%;
-        max-height: 120px;
+        max-height: 130px;
         overflow: hidden;
+
+        .movie-list-item-title-mobile {
+            color: variables.$additional-color;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
 
         .movie-list-item-fields {
             grid-gap: 1em;
             display: flex;
             grid-auto-flow: row;
+
+            .movie-list-item-rating-mobile {
+                display: none;
+            }
 
             .movie-list-item-text-fields p{
                 margin-bottom: 6px;
@@ -141,7 +173,7 @@ export default class MovieListItem extends Vue {
             }
 
             .movie-list-item-text-fields {
-                height: 120px;
+                height: 130px;
                 width: 100%;
                 padding-left: 7px;
                 cursor: pointer;
@@ -149,12 +181,12 @@ export default class MovieListItem extends Vue {
 
             .movie-list-item-title {
                 color: variables.$additional-color;
-                font-size: 14px;
                 font-weight: bold;
+                display: none;
             }
 
             .movie-image {
-                height: 106px;
+                height: 90px;
                 transition: all .7s ease;
                 border-radius: 4px;
                 cursor: pointer;
@@ -206,7 +238,6 @@ export default class MovieListItem extends Vue {
 
                 .movie-image {
                     height: 300px;
-                    border-radius: 4px;
                 }
             }
 
@@ -223,10 +254,69 @@ export default class MovieListItem extends Vue {
         }
     }
 
+    @media screen and (max-width: 500px) {
+        .movie-list-item {
+            .movie-list-item-rating {
+                display: none;
+            }
+
+            .movie-genres {
+                max-height: 40px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .movie-list-item-fields {
+
+                .movie-list-item-rating-mobile {
+                    margin: 10px 0;
+                    display: block;
+                    font-size: 14px;
+
+                    .rating {
+                        display: block;
+                        width: 60px;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+
+            .movie-list-item-overview {
+                font-size: 14px;
+            }
+
+            &.expanded {
+                .movie-list-item-fields {
+                    .movie-genres {
+                        max-height: 80px;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+
+                    .movie-list-item-rating-mobile {
+                        margin: 5px 0 10px;
+                    }
+
+                    .movie-list-item-text-fields {
+                        height: fit-content;
+                    }
+
+                    .movie-image {
+                        height: 90px;
+                    }
+                }
+            }
+        }
+    }
+
     @media screen and (min-width: 500px) {
         .movie-list-item {
             padding: 15px;
             max-height: 150px;
+
+            .movie-list-item-title-mobile {
+                display: none;
+            }
 
             .movie-list-item-fields {
                 .movie-image {
@@ -238,6 +328,10 @@ export default class MovieListItem extends Vue {
 
                     p {
                         font-size: 16px;
+                    }
+
+                    .movie-list-item-title {
+                        display: block;
                     }
                 }
             }
