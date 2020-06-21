@@ -32,6 +32,8 @@ export default class TopMenu extends Vue {
 </script>
 
 <style lang="scss">
+    @use '../style/variables';
+
     .top-panel {
         display: grid;
         grid-template-columns: 1fr;

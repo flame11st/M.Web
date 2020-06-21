@@ -7,7 +7,7 @@
 
             <loader-top-panel v-show="!isLoaded" />
 
-            <div v-show="isLoaded && !isMoviesLoading">
+            <div v-show="isLoaded && !isMoviesLoading" class="main-content">
                 <div v-if="isUserAuthorized" id="component-placeholder">
                     <router-view />
                 </div>
@@ -104,6 +104,10 @@ export default class Main extends Vue {
         background-color: variables.$primary-color;
         color: variables.$fonts-color !important;
         height: 100%;
+
+        .main-content {
+            height: calc(100% - 80px);
+        }
     }
 
     #sidebar-component {
@@ -112,17 +116,17 @@ export default class Main extends Vue {
 
     #component-placeholder {
         grid-area: component-placeholder;
-        height: calc(100% - 80px);
+        height: 100%;
     }
 
     .snackbar-error {
         .v-snack__wrapper {
-            background-color: #F44336;
+            background-color: #F44336 !important;
         }
     }
 
     .v-snack__wrapper {
-        background-color: variables.$additional-color;
+        background-color: variables.$additional-color !important;
         min-width: 250px;
     }
 </style>

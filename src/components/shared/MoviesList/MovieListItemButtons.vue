@@ -117,6 +117,8 @@ export default class MovieListItemButtons extends Vue {
     async rateMovie(movieRate: MovieRate) {
         this.removeDialog = false;
 
+        this.movie.MovieRate = movieRate;
+
         await serviceAgent.RateMovie(this.movie.Id, this.userId, movieRate)
             .then(() => this.$store.dispatch('setUserMovies'));
     }

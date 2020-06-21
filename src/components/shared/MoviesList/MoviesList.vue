@@ -7,6 +7,13 @@
                 :movie="movie"
             />
         </transition-group>
+
+        <div class="empty-movies">
+            <v-card class="empty-movies-card" v-if="!movies.length">
+                <p>Your watchlist is empty.</p>
+                <p>You can click on search field and find any Movie or TV Show.</p>
+            </v-card>
+        </div>
     </div>
 </template>
 
@@ -28,6 +35,8 @@ export default class MovieList extends Vue {
 </script>
 
 <style lang="scss">
+    @use '../../../style/variables';
+
     .movies-list {
         width: 100%;
         max-height: Calc(100vh - 100px);
@@ -38,6 +47,50 @@ export default class MovieList extends Vue {
             justify-items: center;
             width: 100%;
             row-gap: 10px;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        .movies-list {
+            max-height: Calc(100vh - 155px);
+        }
+    }
+
+    .empty-movies {
+        display: grid;
+        width: 100%;
+        justify-items: center;
+
+        .empty-movies-card {
+            width: 90%;
+            height: 130px;
+            justify-self: center;
+            padding: 20px;
+            font-size: 18px;
+
+            &.v-card {
+                background-color: variables.$secondary-color !important;
+                color: variables.$fonts-color;
+            }
+        }
+    }
+
+
+    @media screen and (min-width: 900px) {
+        .empty-movies .empty-movies-card {
+            width: 80%;
+        }
+    }
+
+    @media screen and (min-width: 1100px) {
+        .empty-movies .empty-movies-card {
+            width: 60%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) {
+        .empty-movies .empty-movies-card {
+            width: 50%;
         }
     }
 

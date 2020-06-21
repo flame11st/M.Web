@@ -5,6 +5,18 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             v-on="on"
+                            @click="changeMovieRate(MovieRate.addedToWatchlist)"
+                         >
+                    {{`mdi-card-plus${movieRate === MovieRate.addedToWatchlist ? '' : '-outline'}`}}
+                         </v-icon>
+                    </template>
+                <span>Add to watchlist</span>
+            </v-tooltip>
+
+            <v-tooltip top>
+                    <template v-slot:activator="{ on }">
+                        <v-icon
+                            v-on="on"
                             @click="changeMovieRate(MovieRate.liked)"
                         >
                         {{`mdi-thumb-up${movieRate === MovieRate.liked ? '' : '-outline'}`}}
@@ -23,18 +35,6 @@
                         </v-icon>
                     </template>
                 <span>Not like</span>
-            </v-tooltip>
-
-            <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                        <v-icon
-                            v-on="on"
-                            @click="changeMovieRate(MovieRate.addedToWatchlist)"
-                         >
-                    {{`mdi-card-plus${movieRate === MovieRate.addedToWatchlist ? '' : '-outline'}`}}
-                         </v-icon>
-                    </template>
-                <span>Add to watchlist</span>
             </v-tooltip>
         </div>
         <slot></slot>
@@ -77,8 +77,6 @@ export default class BottomButtons extends Vue {
 
     .bottom-buttons {
         display: grid;
-        padding: 20px;
-        border: 1px solid white;
 
         .v-icon{
             color: variables.$secondary-color;
@@ -86,11 +84,11 @@ export default class BottomButtons extends Vue {
     }
 
     .m-controls {
-        padding-bottom: 10px;
-    }
+        display: grid;
 
-    .m-controls i{
-        padding: 0 10px;
-        font-size: 30px !important;
+        button {
+            font-size: 30px !important;
+            margin: 2px;
+        }
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="rating">
         <v-progress-linear
-            value="movieRating"
+            value="movieRatingValue"
             :color="color"
             height="25"
             rounded
@@ -22,6 +22,15 @@ export default class Rating extends Vue {
     @Prop() movieRating!: number;
 
     @Prop() scores!: number;
+
+    get movieRatingValue() {
+        return this.movieRating;
+    }
+
+    // Fake setter to avoid errors in console
+    set movieRatingValue(value) {
+        const x = value;
+    }
 
     get color() {
         let result = 'red';
@@ -51,11 +60,16 @@ export default class Rating extends Vue {
         /* background-color: greenyellow; */
         .v-progress-linear__background {
             background-color: variables.$additional-color;
+            width: 100%;
         }
 
-        .v-progress-linear__content {
-            background-color: variables.$additional-color;
-            opacity: .3;
+        .v-progress-linear__determinate {
+            width: 100%;
         }
+
+        // .v-progress-linear__content {
+        //     background-color: variables.$additional-color;
+        //     opacity: .3;
+        // }
     }
 </style>

@@ -18,9 +18,24 @@
             </div>
         </div>
 
+        <div class="my-movies-buttons-mobile">
+            <div class="my-movies-buttons-items">
+                <v-btn text class="pa-0"
+                    @click="isWatchlist = true"
+                    :class="{ 'selected' : isWatchlist}">
+                    Watchlist
+                </v-btn>
+                <v-btn text class="pa-0"
+                    @click="isWatchlist = false"
+                    :class="{ 'selected' : !isWatchlist}">
+                    Viewed
+                </v-btn>
+            </div>
+        </div>
+
         <div class="my-movies-list">
             <div class="my-movies-list-filter" v-show="userMovies.length > 0">
-                <v-btn dark fab small @click="filterOpened = !filterOpened">
+                <v-btn class="my-movies-list-filter-button" dark fab small @click="filterOpened = !filterOpened">
                         <v-icon v-show="filterOpened">mdi-close</v-icon>
                         <v-icon v-show="!filterOpened">mdi-filter-menu</v-icon>
                 </v-btn>
@@ -55,6 +70,11 @@
                         </div>
                     </div>
                 </v-slide-x-transition>
+
+                <!-- <v-btn class="my-movies-list-filter-button-mobile" dark fab small @click="filterOpened = !filterOpened">
+                        <v-icon v-show="filterOpened">mdi-close</v-icon>
+                        <v-icon v-show="!filterOpened">mdi-filter-menu</v-icon>
+                </v-btn> -->
             </div>
 
             <MoviesList :movies="watchlistMovies" v-show="isWatchlist"/>
@@ -163,7 +183,7 @@ export default class MyMovies extends Vue {
 
     .my-movies {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 8fr;
         height: 100%;
         align-items: center;
         padding-top: 10px;
@@ -175,10 +195,15 @@ export default class MyMovies extends Vue {
             overflow: auto;
 
             .my-movies-list-filter {
-                display: none;
                 position: absolute;
                 left: 15px;
-                width: 25%;
+                width: 150px;
+                z-index: 9;
+                // background-color: variables.$fonts-color;
+
+                // .my-movies-list-filter-button-mobile {
+                //     display: none;
+                // }
 
                 button {
                     align-self: center;
@@ -220,7 +245,7 @@ export default class MyMovies extends Vue {
 
     .my-movies-buttons {
         width: 100%;
-        display: none;
+        display: grid;
         justify-items: center;
         grid-template-columns: 1fr 4fr;
 
@@ -258,16 +283,101 @@ export default class MyMovies extends Vue {
         }
     }
 
-    @media screen and (min-width: 900px) {
+    .my-movies-buttons-mobile {
+        display: none;
+
+        .my-movies-buttons-icon {
+            .v-icon {
+                color: variables.$additional-color !important;
+                margin-top: 45px;
+                transition: margin 1s;
+
+                &.watchlist-selected {
+                    margin-top: 5px;
+                    transition: margin 1s;
+                }
+            }
+        }
+        .my-movies-buttons-items {
+            width: 100%;
+            display: grid;
+            grid-auto-flow: column;
+            padding: 0 30px;
+
+            button {
+                font-size: 17px;
+                letter-spacing: 0.5px;
+                color: variables.$fonts-color !important;
+                transition: color 2s;
+                text-transform: none;
+
+                &.selected {
+                    color: variables.$additional-color !important;
+                    transition: color 2s;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 900px) {
         .my-movies {
-            grid-template-columns: 1fr 8fr;
+            grid-template-columns: 1fr;
+            grid-template-rows: 50px 1fr;
+            padding: 0;
 
             .my-movies-buttons {
-                display: grid;
+                display: none;
             }
 
-            .my-movies-list-filter {
-                display: block !important;
+            .my-movies-buttons-mobile {
+                display: block;
+            }
+
+            .my-movies-list {
+                padding-top: 10px;
+
+                .my-movies-list-filter {
+                    // bottom: 15px;
+                    width: fit-content;
+                    top: 85px;
+
+                    // .my-movies-list-filter-button {
+                    //     display: none;
+                    // }
+
+                    // .my-movies-list-filter-button-mobile {
+                    //     display: block;
+                    // }
+
+                    .my-movies-list-filter-selectors {
+                        color: variables.$primary-color;
+                        background-color: variables.$fonts-color;
+                        border-radius: 5px;
+                        padding: 15px;
+                        margin-top: 10px;
+
+                        .my-movies-list-filter-section {
+                            margin: 0;
+                        }
+
+                        .v-input__control {
+                            .v-input__slot {
+                                .v-input--switch__track,
+                                .v-input--switch__thumb,
+                                .v-input--selection-controls__ripple {
+                                    color: variables.$secondary-color !important;
+                                }
+
+                                .v-label {
+                                    color: variables.$primary-color;
+                                }
+                            }
+                            .v-messages {
+                                display: none;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

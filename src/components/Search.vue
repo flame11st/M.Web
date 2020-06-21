@@ -26,7 +26,7 @@
                     >
                         <v-img class="seach-finded-item-image" :src="imageUrl + item.PosterPath"/>
 
-                        <div>
+                        <div class="seach-finded-item-text-fields">
                             <h3>{{ item.Title }}</h3>
                             <p>{{ item.Year }}</p>
                             <p>{{ item.Genres.join(', ') }}</p>
@@ -152,7 +152,11 @@ export default class Search extends Vue {
 
     async search() {
         const self = this;
-        const movies = await serviceAgent.Search(this.searchText);
+        const { searchText } = this;
+
+        const movies = await serviceAgent.Search(searchText);
+
+        if (this.searchText !== searchText) return;
 
         this.items = movies.data.map((m: any): MovieSearchDTO => {
             const result = new MovieSearchDTO(m);
@@ -193,7 +197,7 @@ export default class Search extends Vue {
                 .seach-finded-item {
                     padding: 10px;
                     display: grid;
-                    grid-template-columns: 1fr 5fr 200px;
+                    grid-template-columns: 1fr 5fr 75px;
 
                     .buttons {
                         align-self: center;
@@ -204,9 +208,14 @@ export default class Search extends Vue {
                         margin-bottom: 0;
                     }
 
+                    .seach-finded-item-text-fields {
+                        align-self: center;
+                    }
+
                     .seach-finded-item-image {
                         width: 60px;
                         height: 90px;
+                        align-self: center;
                     }
                 }
             }
@@ -226,6 +235,9 @@ export default class Search extends Vue {
 
         @media screen and (max-width: 500px) {
             .seach-finded-item {
+                .seach-finded-item-text-fields {
+                    font-size: 14px;
+                }
                 grid-template-columns: 1fr 3fr 50px !important;
             }
         }

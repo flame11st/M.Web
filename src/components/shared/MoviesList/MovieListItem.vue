@@ -229,7 +229,8 @@ export default class MovieListItem extends Vue {
                 grid-template-columns: 200px 1fr 40px;
 
                 .movie-list-item-text-fields {
-                    height: 300px;
+                    height: fit-content;
+                    min-height: 300px;
 
                     p {
                         margin-bottom: 8px;
