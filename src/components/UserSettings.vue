@@ -21,15 +21,18 @@
                 </v-card-title>
                 <v-card-text>
                     <div class="user-settings-field user-settings-field-v-text">
-                        <span>Name:</span>
-                        <v-form v-model="nameValid">
-                            <v-text-field
-                                v-model="user.Name"
-                                outlined
-                                dense
-                                :rules="[validationRules.required]"
-                            ></v-text-field>
-                        </v-form>
+                        <div class="user-settings-field-row">
+                            <span>Name:</span>
+                            <v-form v-model="nameValid">
+                                <v-text-field
+                                    v-model="user.Name"
+                                    outlined
+                                    dense
+                                    :rules="[validationRules.required]"
+                                ></v-text-field>
+                            </v-form>
+                        </div>
+
                         <v-btn
                             text
                             :disabled="!nameChanged || !nameValid"
@@ -41,16 +44,19 @@
                     <v-divider />
 
                     <div class="user-settings-field user-settings-field-v-text">
-                        <span>Email:</span>
-                        <v-form v-model="emailValid">
-                            <v-text-field
-                                v-model="user.Email"
-                                outlined
-                                dense
-                                :rules="[validationRules.required, validationRules.emailValidate]"
-                                :readonly="isSignedInThroughGoogle"
-                            ></v-text-field>
-                        </v-form>
+                        <div class="user-settings-field-row">
+                            <span>Email:</span>
+                            <v-form v-model="emailValid">
+                                <v-text-field
+                                    v-model="user.Email"
+                                    outlined
+                                    dense
+                                    :rules="[validationRules.required, validationRules.emailValidate]"
+                                    :readonly="isSignedInThroughGoogle"
+                                ></v-text-field>
+                            </v-form>
+                        </div>
+
                         <v-btn
                             v-if="!isSignedInThroughGoogle"
                             text :disabled="!emailChanged || !emailValid"
@@ -61,7 +67,7 @@
 
                     <v-divider />
 
-                    <div class="user-settings-field">
+                    <div class="user-settings-field user-movies-count">
                         <span>User movies count:</span>
                         <span v-text="userMoviesCount"></span>
                         <v-btn text :disabled="userMoviesCount === 0" @click="clearUserMovies">Clear all</v-btn>
@@ -390,4 +396,38 @@ export default class UserSettings extends Vue {
             min-width: 250px;
         }
     }
+
+     @media screen and (max-width: 899px) {
+         .user-settings-card {
+             .user-settings-field {
+                 grid-template-columns: 1fr;
+                 gap: 1px;
+
+                 .user-settings-field-row {
+                     grid-template-columns: 1fr 3fr;
+                     display: grid;
+                     align-items: baseline;
+                 }
+
+                 &.user-movies-count {
+                    grid-template-columns: 5fr 3fr 2fr;
+                    gap: 10px;
+                 }
+
+                 .user-settings-field-change-password {
+                    .v-text-field {
+                        padding-top: 10px !important;
+                    }
+                }
+             }
+         }
+
+         .v-dialog {
+             margin: 5px !important;
+
+             .v-card__text {
+                 padding: 0 25px 20px !important;
+             }
+         }
+     }
 </style>

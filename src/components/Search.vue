@@ -188,7 +188,7 @@ export default class Search extends Vue {
 
         .search-panel {
             width: 90%;
-            z-index: 10;
+            z-index: 7;
 
             .seach-finded-items {
                 max-height: 90vh;

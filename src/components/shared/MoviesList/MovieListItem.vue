@@ -88,7 +88,7 @@ export default class MovieListItem extends Vue {
 
     MovieType = MovieType;
 
-    imageUrl = 'https://image.tmdb.org/t/p/w500/';
+    imageUrl = 'https://moviediarystorage.blob.core.windows.net/movies';
 
     isItemExpanded = false;
 

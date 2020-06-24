@@ -77,8 +77,8 @@
                 </v-btn> -->
             </div>
 
-            <MoviesList :movies="watchlistMovies" v-show="isWatchlist"/>
-            <MoviesList :movies="viewedMovies" v-show="!isWatchlist" />
+            <MoviesList :movies="watchlistMovies" :isWatchlist="isWatchlist" v-show="isWatchlist"/>
+            <MoviesList :movies="viewedMovies" :isWatchlist="isWatchlist" v-show="!isWatchlist" />
         </div>
     </div>
 </template>
@@ -302,7 +302,7 @@ export default class MyMovies extends Vue {
             width: 100%;
             display: grid;
             grid-auto-flow: column;
-            padding: 0 30px;
+            padding: 0 50px;
 
             button {
                 font-size: 17px;
@@ -319,7 +319,7 @@ export default class MyMovies extends Vue {
         }
     }
 
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 899px) {
         .my-movies {
             grid-template-columns: 1fr;
             grid-template-rows: 50px 1fr;
@@ -339,6 +339,7 @@ export default class MyMovies extends Vue {
                 .my-movies-list-filter {
                     // bottom: 15px;
                     width: fit-content;
+                    left: 10px;
                     top: 85px;
 
                     // .my-movies-list-filter-button {

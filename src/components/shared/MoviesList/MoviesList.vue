@@ -8,9 +8,9 @@
             />
         </transition-group>
 
-        <div class="empty-movies">
-            <v-card class="empty-movies-card" v-if="!movies.length">
-                <p>Your watchlist is empty.</p>
+        <div class="empty-movies" v-if="!movies.length">
+            <v-card class="empty-movies-card">
+                <p>{{ `Your ${isWatchlist ? 'watchlist' : 'viewed list'} is empty.` }}</p>
                 <p>You can click on search field and find any Movie or TV Show.</p>
             </v-card>
         </div>
@@ -31,6 +31,14 @@ import Movie from '@/objects/movie';
 })
 export default class MovieList extends Vue {
     @Prop() movies!: Movie[];
+
+    @Prop() isWatchlist!: boolean;
+
+    get userMoviesCount() {
+        const result = this.$store.getters.userMoviesCount;
+
+        return result;
+    }
 }
 </script>
 

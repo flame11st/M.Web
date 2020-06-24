@@ -42,6 +42,17 @@
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+
+                        <v-list-item v-if="user && user.Role === 'Admin'">
+                            <v-list-item-icon>
+                                <v-icon>mdi-hammer-wrench</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <a href="/api/hangfire">Hangfire</a>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list>
                 </v-card>
             </v-menu>
@@ -146,6 +157,22 @@ export default class UserInfo extends Vue {
             .avatar {
                 .v-avatar {
                     background-color: variables.$additional-color;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 899px) {
+        .user-info {
+            > div {
+                .avatar {
+                    .v-avatar {
+                        background-color: variables.$secondary-color;
+
+                        i {
+                            color: white;
+                        }
+                    }
                 }
             }
         }
