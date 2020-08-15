@@ -29,7 +29,7 @@
                         <div class="seach-finded-item-text-fields">
                             <h3>{{ item.Title }}</h3>
                             <p>{{ item.Year }}</p>
-                            <p>{{ item.Genres.join(', ') }}</p>
+                            <p v-if="item.Genres">{{ item.Genres.join(', ') }}</p>
                         </div>
                         <div class="buttons">
                             <buttons
