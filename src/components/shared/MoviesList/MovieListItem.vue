@@ -37,11 +37,11 @@
                 <v-slide-x-reverse-transition>
                     <div v-show="isItemExpanded" class="movie-expanded-fields">
                         <p v-show="movie.Directors.length">
-                            {{ `Director${movie.Directors.length > 1 ? 's' : ''}: ` + movie.Directors.map(a => a.Name).join(', ') }}
+                            {{ `Director${movie.Directors.length > 1 ? 's' : ''}: ` + movie.Directors.join(', ') }}
                         </p>
 
                         <p v-show="movie.Actors.length">
-                            Starring: {{ movie.Actors.map(a => a.Name).join(', ') }}
+                            Starring: {{ movie.Actors.join(', ') }}
                         </p>
 
                         <p>

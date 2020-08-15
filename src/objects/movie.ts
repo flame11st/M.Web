@@ -4,9 +4,9 @@ import MovieType from '@/enums/movieType';
 
 class Movie {
     constructor(movieDTO: any) {
-        this.Actors = movieDTO.actors.map((a: any) => new Person(a));
+        this.Actors = movieDTO.actors;
         this.Countries = movieDTO.countries;
-        this.Directors = movieDTO.directors.map((d: any) => new Person(d));
+        this.Directors = movieDTO.directors;
         this.Duration = movieDTO.duration;
         this.Genres = movieDTO.genres;
         this.Id = movieDTO.id;
@@ -20,8 +20,11 @@ class Movie {
         this.AverageTimeOfEpisode = movieDTO.averageTimeOfEpisode;
         this.InProduction = movieDTO.inProduction;
         this.SeasonsCount = movieDTO.seasonsCount;
-        this.Rating = movieDTO.rating;
-        this.Scores = movieDTO.scores;
+        this.LikedVotes = movieDTO.likedVotes;
+        this.UnlikedVotes = movieDTO.unlikedVotes;
+
+        this.Scores = this.LikedVotes + this.UnlikedVotes;
+        this.Rating = this.Scores !== 0 ? (100 / (this.Scores)) * this.LikedVotes : 0;
     }
 
     Id!: string;
@@ -40,11 +43,15 @@ class Movie {
 
     Scores!: number;
 
+    LikedVotes!: number;
+
+    UnlikedVotes!: number;
+
     Countries!: string[];
 
-    Actors!: Person[];
+    Actors!: string[];
 
-    Directors!: Person[];
+    Directors!: string[];
 
     Genres!: string[];
 
