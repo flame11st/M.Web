@@ -77,7 +77,7 @@ class ServiceAgent {
     }
 
     GoogleLogin(idToken: string) {
-        return api.get(`Identity/GoogleLogin?idToken=${idToken}`);
+        return api.get(`Identity/GoogleLoginWeb?idToken=${idToken}`);
     }
 
     // Administration part
