@@ -1,0 +1,23 @@
+::-webkit-scrollbar {
+    width: .2rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #747475;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background-color: #747475
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    transition: all 5000s ease-in-out 0s;
+    font-size: 16px;
+}
