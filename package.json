@@ -8,7 +8,6 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
-    "postinstall": "npm run build",
     "start": "node server.js"
   },
   "dependencies": {
