@@ -2,14 +2,14 @@
   "name": "m.web",
   "version": "0.1.0",
   "private": true,
-  "postinstall": "npm run build",
-  "start": "node server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "lint:fix": "vue-cli-service lint --fix"
+    "lint:fix": "vue-cli-service lint --fix",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "@types/lodash": "^4.14.155",
