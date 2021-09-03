@@ -1,7 +1,9 @@
 import axios from 'axios';
 import EventBus from '@/services/eventBus';
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'https://mwebapi1.azurewebsites.net/api/' : 'https://localhost:44321/';
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://192.168.31.60/api/' : 'https://localhost:44321/';
+// const baseUrl = process.env.NODE_ENV === 'production' ? 'http://192.168.31.112/api/' : 'https://localhost:44321/';
+// const baseUrl = process.env.NODE_ENV === 'production' ? 'https://mwebapi1.azurewebsites.net/api/' : 'https://localhost:44321/';
 
 const api = axios.create({
     baseURL: baseUrl,

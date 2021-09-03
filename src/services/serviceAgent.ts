@@ -73,7 +73,7 @@ class ServiceAgent {
     }
 
     Search(query: string) {
-        return api.get(`movies/Search?query=${query}`);
+        return api.get(`movies/SearchByIndexedColumn?query=${query}`);
     }
 
     GoogleLogin(idToken: string) {
