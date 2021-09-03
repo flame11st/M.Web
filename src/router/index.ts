@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import MyMovies from '@/components/MyMovies.vue';
 import Admin from '@/components/Admin.vue';
+import Privacy from '@/components/Privacy.vue';
 import ServiceAgent from '@/services/serviceAgent';
 
 const serviceAgent = new ServiceAgent();
@@ -22,6 +23,7 @@ const routes = [
             }
         },
     },
+    { path: '/privacy', component: Privacy },
 ];
 
 const router = new VueRouter({
