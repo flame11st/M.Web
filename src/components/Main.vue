@@ -5,7 +5,7 @@
                 <top-panel />
             </div>
 
-            <privacy />
+            <support />
 
             <!-- Commented to avoid issues on remote server -->
 
@@ -51,7 +51,8 @@ import LoaderTopPanel from './LoaderTopPanel.vue';
 import LoaderMyMovies from './LoaderMyMovies.vue';
 import ServiceAgent from '@/services/serviceAgent';
 import EventBus from '@/services/eventBus';
-import Privacy from '@/components/Privacy.vue';
+import Privacy from '@/components/appStore/Privacy.vue';
+import Support from '@/components/appStore/Support.vue';
 
 const serviceAgent = new ServiceAgent();
 
@@ -62,6 +63,7 @@ const serviceAgent = new ServiceAgent();
         LoaderTopPanel,
         LoaderMyMovies,
         Privacy,
+        Support,
     },
 })
 export default class Main extends Vue {
