@@ -1,11 +1,19 @@
 <template>
     <v-app>
         <div id="main">
-            <div id="top-panel-component" v-show="isLoaded">
-                <top-panel v-if="isUserAuthorized"/>
+            <div id="top-panel-component">
+                <top-panel />
             </div>
 
-            <loader-top-panel v-show="!isLoaded" />
+            <router-view />
+
+            <!-- Commented to avoid issues on remote server -->
+
+            <!-- <div id="top-panel-component" v-show="isLoaded">
+                <top-panel v-if="isUserAuthorized"/>
+            </div> -->
+
+            <!-- <loader-top-panel v-show="!isLoaded" />
 
             <div v-show="isLoaded && !isMoviesLoading" class="main-content">
                 <div v-if="isUserAuthorized" id="component-placeholder">
@@ -29,7 +37,7 @@
                 :class="{ 'snackbar-error' : !snackbarSuccess }"
             >
                 {{ snackbarText }}
-            </v-snackbar>
+            </v-snackbar> -->
         </div>
     </v-app>
 </template>
