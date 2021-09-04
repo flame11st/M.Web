@@ -5,7 +5,7 @@
                 <top-panel />
             </div>
 
-            <router-view />
+            <privacy />
 
             <!-- Commented to avoid issues on remote server -->
 
@@ -51,6 +51,7 @@ import LoaderTopPanel from './LoaderTopPanel.vue';
 import LoaderMyMovies from './LoaderMyMovies.vue';
 import ServiceAgent from '@/services/serviceAgent';
 import EventBus from '@/services/eventBus';
+import Privacy from '@/components/Privacy.vue';
 
 const serviceAgent = new ServiceAgent();
 
@@ -60,6 +61,7 @@ const serviceAgent = new ServiceAgent();
         WelcomeCard,
         LoaderTopPanel,
         LoaderMyMovies,
+        Privacy,
     },
 })
 export default class Main extends Vue {

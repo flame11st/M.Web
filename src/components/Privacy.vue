@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="privacy">
     <strong>Privacy Policy</strong> <p>
                   Serhii Tkachenko built the MovieDiary app as
                   an Ad Supported app. This SERVICE is provided by
@@ -97,3 +97,9 @@
                 </p>
   </div>
 </template>
+
+<style lang="scss">
+  .privacy {
+    padding: 10px 20%;
+  }
+</style>
