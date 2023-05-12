@@ -1,19 +1,19 @@
 <template>
     <v-app>
         <div id="main">
-            <!-- <div id="top-panel-component">
+            <div id="top-panel-component">
                 <top-panel />
             </div>
 
-            <router-view /> -->
+            <privacy />
 
             <!-- Commented to avoid issues on remote server -->
 
-            <div id="top-panel-component" v-show="isLoaded">
+            <!-- <div id="top-panel-component" v-show="isLoaded">
                 <top-panel v-if="isUserAuthorized"/>
-            </div>
+            </div> -->
 
-            <loader-top-panel v-show="!isLoaded" />
+            <!-- <loader-top-panel v-show="!isLoaded" />
 
             <div v-show="isLoaded && !isMoviesLoading" class="main-content">
                 <div v-if="isUserAuthorized" id="component-placeholder">
@@ -37,7 +37,7 @@
                 :class="{ 'snackbar-error' : !snackbarSuccess }"
             >
                 {{ snackbarText }}
-            </v-snackbar>
+            </v-snackbar> -->
         </div>
     </v-app>
 </template>
@@ -51,6 +51,7 @@ import LoaderTopPanel from './LoaderTopPanel.vue';
 import LoaderMyMovies from './LoaderMyMovies.vue';
 import ServiceAgent from '@/services/serviceAgent';
 import EventBus from '@/services/eventBus';
+import Privacy from '@/components/Privacy.vue';
 
 const serviceAgent = new ServiceAgent();
 
@@ -60,6 +61,7 @@ const serviceAgent = new ServiceAgent();
         WelcomeCard,
         LoaderTopPanel,
         LoaderMyMovies,
+        Privacy,
     },
 })
 export default class Main extends Vue {
