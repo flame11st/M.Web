@@ -15,7 +15,7 @@
                     <li>On the opened dialog click 'Remove' button</li>
                   </ul>
                 </p> <p>
-                  That's it, your user and all releted data successfully removed.
+                  That's it, your user and all related data successfully removed.
                 </p> <p>
                   If you have any questions or concerns about our data deletion policy,
                   please feel free to contact our support team at flamesoft.comp@gmail.com.
